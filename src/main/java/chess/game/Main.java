@@ -1,6 +1,6 @@
 package chess.game;
 
-import chess.game.network.NetworkGame;
+import chess.game.network.NetworkDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
  *
  *      network, in which case, a frame is built individually for each player.
  *               To activate, select "Play networked" -> "Host",
- *               run another instance, select "Play networked" -> "Client", type "localhost"
+ *               run another instance, select "Play networked" -> "Connect", type "localhost"
  */
 public class Main {
 
@@ -46,7 +46,7 @@ public class Main {
         buttonPlayNetwork.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                new NetworkGame();
+                new NetworkDialog();
             }
         });
 

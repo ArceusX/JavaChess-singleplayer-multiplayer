@@ -12,29 +12,29 @@ import java.util.StringTokenizer;
  */
 public class LocalGame implements Game, Serializable {
 
-    JDialog boardframe;
+    JDialog frame;
     Player player1;
     Player player2;
     Board board;
 
     LocalGame(String p1, String p2) {
-        boardframe = new JDialog();
+        frame = new JDialog();
 
-        boardframe.setTitle("Play chess");
-        boardframe.setSize(800,900);
-        boardframe.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        boardframe.setModal(true);
+        frame.setTitle("Play chess");
+        frame.setSize(800,900);
+        frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        frame.setModal(true);
 
         player1 = new Player(p1, Colour.WHITE, this);
         player2 = new Player(p2,Colour.BLACK, this);
 
         board = new Board();
 
-        boardframe.add(player1.playerpanel, BorderLayout.PAGE_END);
-        boardframe.add(board.panel, BorderLayout.CENTER);
-        boardframe.add(player2.playerpanel,BorderLayout.PAGE_START);
+        frame.add(player1.playerpanel, BorderLayout.PAGE_END);
+        frame.add(board.panel, BorderLayout.CENTER);
+        frame.add(player2.playerpanel,BorderLayout.PAGE_START);
 
-        boardframe.setVisible(true);
+        frame.setVisible(true);
     }
 
     @Override
@@ -48,10 +48,10 @@ public class LocalGame implements Game, Serializable {
         if(buttonname.equals("Resign")) {
 
             if(playername.equals(player1.name)) {
-                JOptionPane.showMessageDialog(boardframe,player2.name + " (" + player2.c +") wins!");
+                JOptionPane.showMessageDialog(frame,player2.name + " (" + player2.c +") wins!");
                 System.exit(0);
             } else {
-                JOptionPane.showMessageDialog(boardframe,player1.name + " (" + player1.c +") wins!");
+                JOptionPane.showMessageDialog(frame,player1.name + " (" + player1.c +") wins!");
                 System.exit(0);
             }
 
@@ -60,15 +60,15 @@ public class LocalGame implements Game, Serializable {
             //clicked on draw
             Object[] options = {"Yes","No"};
             if(playername.equals(player1.name)) {
-                int choice = JOptionPane.showOptionDialog(boardframe,player1.name + " (" + player1.c +") requests draw. Accept?","Accept Draw?",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
+                int choice = JOptionPane.showOptionDialog(frame,player1.name + " (" + player1.c +") requests draw. Accept?","Accept Draw?",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
                 if(choice == 0) {
-                    JOptionPane.showMessageDialog(boardframe,"Game is draw!");
+                    JOptionPane.showMessageDialog(frame,"Game is draw!");
                     System.exit(0);
                 }
             } else {
-                int choice = JOptionPane.showOptionDialog(boardframe,player2.name + " (" + player2.c +") requests draw. Accept?","Accept Draw?",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
+                int choice = JOptionPane.showOptionDialog(frame,player2.name + " (" + player2.c +") requests draw. Accept?","Accept Draw?",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]);
                 if(choice == 0) {
-                    JOptionPane.showMessageDialog(boardframe,"Game is draw!");
+                    JOptionPane.showMessageDialog(frame,"Game is draw!");
                     System.exit(0);
                 }
             }

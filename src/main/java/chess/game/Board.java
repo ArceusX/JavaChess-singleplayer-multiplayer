@@ -11,7 +11,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 
-import static chess.game.network.Connect.modifyClientNetworkTurn;
+import static chess.game.network.Connect.modifyConnectNetworkTurn;
 import static chess.game.network.Host.modifyHostNetworkTurn;
 import static java.lang.Math.abs;
 
@@ -90,7 +90,7 @@ public class Board {
             if(isHost) {
                 modifyHostNetworkTurn(Colour.BLACK);
             } else {
-                modifyClientNetworkTurn(Colour.WHITE);
+                modifyConnectNetworkTurn(Colour.WHITE);
             }
 
         } catch (IOException e) {
@@ -106,7 +106,7 @@ public class Board {
             if(isHost) {
                 modifyHostNetworkTurn(Colour.BLACK);
             } else {
-                modifyClientNetworkTurn(Colour.WHITE);
+                modifyConnectNetworkTurn(Colour.WHITE);
             }
 
         } catch (IOException e) {

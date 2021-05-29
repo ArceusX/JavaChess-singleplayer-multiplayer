@@ -17,18 +17,18 @@ import static chess.game.Board.updateBoardFromNetwork;
 //Denotes client class, but as the "Client" name has already been taken...
 public class Connect implements Game {
 
-    JDialog boardframe;
+    JDialog frame;
     Player player;
     Board board;
     String name;
-    public static Colour clientnetworkturn;
+    public static Colour connectTurn;
 
-    Socket connection;
-    ObjectOutputStream output;
-    ObjectInputStream input;
-    String serverip;
+    Socket socket;
+    ObjectOutputStream outputStream;
+    ObjectInputStream inputStream;
+    String serverIp;
 
-    Connect(String clientname) {
+    Connect(String connectname) {
 
         Thread networkthread = new Thread(new Runnable() {
             @Override
@@ -44,28 +44,27 @@ public class Connect implements Game {
         });
 
         networkthread.start();
-        createAndShowGUI(clientname);
+        createAndShowGUI(connectname);
     }
 
-    private void createAndShowGUI(String clientname) {
+    private void createAndShowGUI(String connectname) {
 
-        boardframe = new JDialog();
-        clientnetworkturn = Colour.WHITE;                                                                     //turn = white means, its white's turn to play and not turn of client
-        name = clientname;
+        frame = new JDialog();
+        connectTurn = Colour.WHITE;                                                                     //turn = white means, its white's turn to play and not turn of connect
+        name = connectname;
 
-        boardframe.setTitle("Client");
-        boardframe.setSize(800,850);
-        boardframe.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        boardframe.setModal(true);
+        frame.setTitle("Connect");
+        frame.setSize(800,850);
+        frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        frame.setModal(true);
 
-        player = new Player(clientname, Colour.BLACK,this);                             //this indicates client's piece colour is black
+        player = new Player(connectname, Colour.BLACK,this);                             //this indicates connect's piece colour is black
         // board = new Board();
         player.disableDraw();
 
-        boardframe.add(player.playerpanel, BorderLayout.PAGE_START);
-        // boardframe.add(board.boardpanel, BorderLayout.CENTER);
+        frame.add(player.playerpanel, BorderLayout.PAGE_START);
 
-        boardframe.setVisible(true);
+        frame.setVisible(true);
     }
 
     private void setEnableRec(final Component container,final boolean enable){
@@ -87,7 +86,7 @@ public class Connect implements Game {
     }
 
     public void startRunning() {
-        //since client is always black, we disable the board in the beginning
+        //since connect is always black, we disable the board in the beginning
         //when we receive an object, we change token and then we enable the board
         try {
             createConnection();
@@ -96,27 +95,27 @@ public class Connect implements Game {
 
         } catch (IOException e) {
             //i/o error when opening socket
-            JOptionPane.showMessageDialog(boardframe,"Connection failed!","Error", JOptionPane.ERROR_MESSAGE);
-            boardframe.dispose();
+            JOptionPane.showMessageDialog(frame,"Connection failed!","Error", JOptionPane.ERROR_MESSAGE);
+            frame.dispose();
         }
     }
 
-    public static void modifyClientNetworkTurn(Colour c) {
-        clientnetworkturn = c;
+    public static void modifyConnectNetworkTurn(Colour c) {
+        connectTurn = c;
     }
 
     public void createConnection() throws IOException {
 
-            serverip = JOptionPane.showInputDialog("Enter the IP address: ");
-            connection = new Socket(serverip,6789);
-            JOptionPane.showMessageDialog(boardframe,"CLIENT: Successfully connected to " + connection.getInetAddress().getHostAddress());
+            serverIp = JOptionPane.showInputDialog("Enter the IP address: ");
+            socket = new Socket(serverIp, 1111);
+            JOptionPane.showMessageDialog(frame,"CLIENT: Successfully connected to " + socket.getInetAddress().getHostAddress());
 
     }
 
     public void createStreams() throws IOException {
-        output = new ObjectOutputStream(connection.getOutputStream());
-        output.flush();
-        input = new ObjectInputStream(connection.getInputStream());
+        outputStream = new ObjectOutputStream(socket.getOutputStream());
+        outputStream.flush();
+        inputStream = new ObjectInputStream(socket.getInputStream());
 
         createBoard();
 
@@ -125,9 +124,9 @@ public class Connect implements Game {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                board = new Board(input, output,false);
-                boardframe.add(board.panel, BorderLayout.CENTER);
-                boardframe.validate();
+                board = new Board(inputStream, outputStream,false);
+                frame.add(board.panel, BorderLayout.CENTER);
+                frame.validate();
             }
         });
 
@@ -139,19 +138,16 @@ public class Connect implements Game {
             SwingUtilities.isEventDispatchThread();     //no idea why i have to include this line
                                                         //if i remove above line only keep the if condition, everything acts weird
 
-            if(clientnetworkturn == Colour.WHITE) {
+            if(connectTurn == Colour.WHITE) {
                 //need to read from server
 
                 //disable the board first
-                setEnableRec(boardframe,false);
+                setEnableRec(frame,false);
 
                 try {
-
-                    movedcells = (ArrayList<Coordinate>) input.readObject();
-
-                    if(movedcells == null)
-                    {
-                        JOptionPane.showMessageDialog(boardframe, "You won! Congratulations!");
+                    movedcells = (ArrayList<Coordinate>) inputStream.readObject();
+                    if(movedcells == null) {
+                        JOptionPane.showMessageDialog(frame, "You won! Congratulations!");
 
                         closeConnections();
                         System.exit(0);         //because someone has won, no need to continue the game
@@ -164,16 +160,16 @@ public class Connect implements Game {
                     classnotfoundexception.printStackTrace();
                 } catch (EOFException eofexception) {
                     //this is normal execution (game has been terminated on the host side) this happens if host won the game
-                    JOptionPane.showMessageDialog(boardframe, "You lost! Please try again!");
+                    JOptionPane.showMessageDialog(frame, "You lost! Fight again!");
 
                     closeConnections();
                     System.exit(0);         //because someone has won, no need to continue the game
 
                 }
                 //enable the board now, since host has played and the board is updated here
-                setEnableRec(boardframe,true);
+                setEnableRec(frame,true);
                 //change turncolour back to black
-                clientnetworkturn = Colour.BLACK;
+                connectTurn = Colour.BLACK;
             }
 
         } while(true);    //condition just for now
@@ -193,7 +189,7 @@ public class Connect implements Game {
                     if(won == Colour.WHITE)
                         JOptionPane.showMessageDialog(null, "White wins!");
                     else
-                        JOptionPane.showMessageDialog(null,"Black wins!");
+                        JOptionPane.showMessageDialog(null, "Black wins!");
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -201,7 +197,7 @@ public class Connect implements Game {
                     }
 
                     try {
-                        output.writeObject(null);
+                        outputStream.writeObject(null);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -215,9 +211,9 @@ public class Connect implements Game {
     private void closeConnections() {
         //close streams
         try {
-            output.close();
-            input.close();
-            connection.close();
+            outputStream.close();
+            inputStream.close();
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -230,14 +226,14 @@ public class Connect implements Game {
         String command = actionEvent.getActionCommand();
 
         if(command.equals(name + " Resign")) {
-            int option = JOptionPane.showConfirmDialog(boardframe, "Are you sure you wish to resign the game?", "Confirm Resign", JOptionPane.YES_NO_OPTION);
+            int option = JOptionPane.showConfirmDialog(frame, "Are you sure you wish to resign the game?", "Confirm Resign", JOptionPane.YES_NO_OPTION);
             if(option == JOptionPane.YES_OPTION) {
-                if(output == null) {
-                    JOptionPane.showMessageDialog(boardframe, "Not connected to any game!", "Error", JOptionPane.ERROR_MESSAGE);
+                if(outputStream == null) {
+                    JOptionPane.showMessageDialog(frame, "Not connected to any game!", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     try {
-                        output.writeObject(null);
-                        JOptionPane.showMessageDialog(boardframe, "You resigned the game!");
+                        outputStream.writeObject(null);
+                        JOptionPane.showMessageDialog(frame, "You resigned the game!");
                         closeConnections();
                         System.exit(0);
                     } catch (IOException e) {
