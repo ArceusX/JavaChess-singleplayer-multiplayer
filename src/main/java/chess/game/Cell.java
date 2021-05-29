@@ -268,15 +268,10 @@ public class Cell implements ActionListener, Serializable {
     }
 
     ChessPiece getPromopiece(){
-        ImageIcon img ;
-        if (turn == Colour.BLACK) {
-            img = new ImageIcon("img/BCapture.png");
-        }
-        else{
-            img = new ImageIcon("img/BCapture.png");
-        }
+        ImageIcon img = new ImageIcon("img/PromotionPieces.png");
+
         String[] options = {"Queen", "Bishop","Knight", "Rook"};
-        int row = JOptionPane.showOptionDialog(null,img,"Pawn Promotion",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null,options,options[0]);
+        int row = JOptionPane.showOptionDialog(null, img ,"Pawn Promotion",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null,options,options[0]);
         System.out.println(row);
         switch (row){
             case 0: return ChessPiece.QUEEN;
