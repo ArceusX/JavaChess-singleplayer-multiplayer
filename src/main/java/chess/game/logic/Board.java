@@ -1,10 +1,4 @@
-package chess.game;
-
-/**Authors:
- * Christopher Fileccia
- * Gian Galang:
- * Triet Lieu:
- */
+package chess.game.logic;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,6 +1,6 @@
 package chess.game.network;
 
-import chess.game.*;
+import chess.game.logic.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +13,7 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-import static chess.game.Board.updateBoardFromNetwork;
+import static chess.game.logic.Board.updateBoardFromNetwork;
 public class Host implements Game {
 
     String name;
@@ -27,7 +27,7 @@ public class Host implements Game {
     ObjectOutputStream outputStream;
     ObjectInputStream inputStream;
 
-    Host(String hostname) {
+    public Host(String hostname) {
         Thread networkthread = new Thread(new Runnable() {
             @Override
             public void run() {

@@ -1,6 +1,6 @@
 package chess.game.network;
 
-import chess.game.*;
+import chess.game.logic.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +12,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import static chess.game.Board.updateBoardFromNetwork;
+import static chess.game.logic.Board.updateBoardFromNetwork;
 
 //Denotes client class, but as the "Client" name has already been taken...
 public class Connect implements Game {
@@ -28,7 +28,7 @@ public class Connect implements Game {
     ObjectInputStream inputStream;
     String serverIp;
 
-    Connect(String connectname) {
+    public Connect(String connectname) {
 
         Thread networkthread = new Thread(new Runnable() {
             @Override

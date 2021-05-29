@@ -1,16 +1,16 @@
 package chess.game.pieces;
 
-import chess.game.Cell;
-import chess.game.Colour;
-import chess.game.Coordinate;
-import chess.game.ChessPiece;
+import chess.game.logic.Cell;
+import chess.game.logic.Colour;
+import chess.game.logic.Coordinate;
+import chess.game.logic.ChessPiece;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static chess.game.Board.isEmpty;
-import static chess.game.Board.isKingAttackedIfPieceRemoved;
-import static chess.game.Board.sameColourPiece;
+import static chess.game.logic.Board.isEmpty;
+import static chess.game.logic.Board.isKingAttackedIfPieceRemoved;
+import static chess.game.logic.Board.sameColourPiece;
 
 public class Rook extends Piece implements Serializable {
 

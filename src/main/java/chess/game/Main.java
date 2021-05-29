@@ -1,5 +1,6 @@
 package chess.game;
 
+import chess.game.logic.LocalGame;
 import chess.game.network.NetworkDialog;
 
 import javax.swing.*;
@@ -9,48 +10,44 @@ import java.awt.event.ActionListener;
 
 /** Starting point of the program.
  *  Choice of playing:
- *      locally, in which case, one frame is built for two players to share
+ *      Locally, in which case, one frame is built for two players to share.
  *
- *      network, in which case, a frame is built individually for each player.
- *               To activate, select "Play networked" -> "Host",
- *               run another instance, select "Play networked" -> "Connect", type "localhost"
+ *      Network, in which case, a frame is built individually for each player.
+ *               To activate, select "Play networked" -> "Host", run another
+ *               instance of the program, select "Play networked" -> "Connect", type "localhost".
  */
 public class Main {
 
     JFrame frame;
-    JPanel panelLocal;
-    JPanel panelNetwork;
-    JPanel panelExit;
-    JButton buttonPlayLocal;
-    JButton buttonPlayNetwork;
-    JButton buttonExit;
+    JButton btnPlayLocal;
+    JButton btnPlayNetwork;
+    JButton btnExit;
 
     Main() {
         frame = new JFrame("Chess");
 
         //Boilerplate
-        //frame.setSize(1000,1000);
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
         addButtons();
 
-        buttonPlayLocal.addActionListener(new ActionListener() {
+        btnPlayLocal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                new LocalGame("Player1", "Player2");
+                new LocalGame("White", "Black");
             }
         });
 
-        buttonPlayNetwork.addActionListener(new ActionListener() {
+        btnPlayNetwork.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 new NetworkDialog();
             }
         });
 
-        buttonExit.addActionListener(new ActionListener() {
+        btnExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 //https://docs.oracle.com/javase/7/docs/api/javax/swing/JOptionPane.html
@@ -78,24 +75,21 @@ public class Main {
 
     private void addButtons() {
 
-        panelLocal = new JPanel();
-        panelNetwork = new JPanel();
-        panelExit = new JPanel();
+        btnPlayLocal = new JButton("Play locally");
+        btnPlayNetwork = new JButton("Play networked");
+        btnExit = new JButton("Exit");
 
-        buttonPlayLocal = new JButton("Play locally");
-        buttonPlayNetwork = new JButton("Play networked");
-        buttonExit = new JButton("Exit");
+        frame.add(Box.createRigidArea(new Dimension(300, 75)));
+        btnPlayLocal.setAlignmentX(Component.CENTER_ALIGNMENT);
+        frame.add(btnPlayLocal);
 
-        panelLocal.add(buttonPlayLocal);
-        panelNetwork.add(buttonPlayNetwork);
-        panelExit.add(buttonExit);
+        frame.add(Box.createRigidArea(new Dimension(300, 75)));
+        btnPlayNetwork.setAlignmentX(Component.CENTER_ALIGNMENT);
+        frame.add(btnPlayNetwork);
 
-        frame.add(Box.createRigidArea(new Dimension(250, 50)));
-        frame.add(panelLocal);
-        frame.add(Box.createRigidArea(new Dimension(250, 50)));
-        frame.add(panelNetwork);
-        frame.add(Box.createRigidArea(new Dimension(250, 50)));
-        frame.add(panelExit);
-        frame.add(Box.createRigidArea(new Dimension(250, 50)));
+        frame.add(Box.createRigidArea(new Dimension(300, 75)));
+        btnExit.setAlignmentX(Component.CENTER_ALIGNMENT);
+        frame.add(btnExit);
+        frame.add(Box.createRigidArea(new Dimension(300, 75)));
     }
 }

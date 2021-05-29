@@ -1,16 +1,16 @@
 package chess.game.pieces;
 
-import chess.game.Cell;
-import chess.game.Colour;
-import chess.game.Coordinate;
-import chess.game.ChessPiece;
+import chess.game.logic.Cell;
+import chess.game.logic.Colour;
+import chess.game.logic.Coordinate;
+import chess.game.logic.ChessPiece;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static chess.game.Cell.contains;
+import static chess.game.logic.Cell.contains;
 
 
 public abstract class Piece implements Serializable {

@@ -1,4 +1,4 @@
-package chess.game;
+package chess.game.logic;
 
 import chess.game.pieces.*;
 
@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static chess.game.Board.*;
+import static chess.game.logic.Board.*;
 
 /** Cell implements functionality of a Chess square and contains
  *  a button, its occupyingPiece (if there is one), its coordinate, and its board colour
@@ -23,7 +23,7 @@ public class Cell implements ActionListener, Serializable {
     Colour colour;
     public ArrayList<Coordinate> legalToCoordinates;
 
-    Cell(int row, int col) {
+    public Cell(int row, int col) {
         btn = new JButton();
         occupyingPiece = null;
         coordinate = new Coordinate(row, col);

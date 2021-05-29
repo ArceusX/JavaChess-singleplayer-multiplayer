@@ -1,4 +1,4 @@
-package chess.game;
+package chess.game.logic;
 
 import java.io.Serializable;
 

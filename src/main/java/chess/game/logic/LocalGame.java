@@ -1,4 +1,4 @@
-package chess.game;
+package chess.game.logic;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 
 /**
  * This class is used to create a chess game.
- * Object of chess.game.LocalGame class will enable you to play chess locally.
+ * Object of chess.game.logic.LocalGame class will enable you to play chess locally.
  */
 public class LocalGame implements Game, Serializable {
 
@@ -17,7 +17,7 @@ public class LocalGame implements Game, Serializable {
     Player player2;
     Board board;
 
-    LocalGame(String p1, String p2) {
+    public LocalGame(String p1, String p2) {
         frame = new JDialog();
 
         frame.setTitle("Play chess");

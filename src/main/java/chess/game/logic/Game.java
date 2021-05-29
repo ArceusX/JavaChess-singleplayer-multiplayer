@@ -1,4 +1,4 @@
-package chess.game;
+package chess.game.logic;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
