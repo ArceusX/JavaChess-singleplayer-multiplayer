@@ -1,0 +1,51 @@
+package chess.game.pieces;
+
+import chess.game.Cell;
+import chess.game.Colour;
+import chess.game.Coordinate;
+import chess.game.ChessPiece;
+
+import javax.swing.*;
+import java.io.File;
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import static chess.game.Cell.contains;
+
+
+public abstract class Piece implements Serializable {
+
+    ImageIcon image;
+    public ChessPiece name;
+    public Colour colour;
+    //Set to false when Piece is removed
+    boolean isInPlay;
+
+    public abstract ArrayList<Coordinate> legalMoves(Cell c);
+
+    ImageIcon createImageIcon(String path) {
+
+        if(new File(path).exists()) {
+            return new ImageIcon(path);
+        } else {
+            return null;
+        }
+    }
+
+    public ArrayList<Coordinate> intersection(ArrayList<Coordinate> list1, ArrayList<Coordinate> list2) {
+
+        ArrayList<Coordinate> list = new ArrayList<Coordinate>();
+
+        for(Coordinate c : list1) {
+            if(contains(list2,c)) {
+                list.add(c);
+            }
+        }
+
+        return list;
+    }
+
+    public ImageIcon getImage() {
+        return image;
+    }
+}
