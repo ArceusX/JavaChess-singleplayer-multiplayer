@@ -8,12 +8,10 @@ import java.io.Serializable;
 public class Local implements Serializable {
 
     Local() {
-
         String player1 = "Player1";
         String player2 = "Player2";
 
-        LocalGame newgame = new LocalGame(player1,player2);
-
+        LocalGame newgame = new LocalGame(player1, player2);
     }
 
 }

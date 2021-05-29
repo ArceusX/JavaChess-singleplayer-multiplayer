@@ -1,5 +1,11 @@
 package chess.game;
 
+/**Authors:
+ * Christopher Fileccia
+ * Gian Galang:
+ * Triet Lieu:
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;

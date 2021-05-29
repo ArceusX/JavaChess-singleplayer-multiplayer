@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 
 /**
  * This class is used to create a chess game.
- * Object of chess.nmamit.LocalGame class will enable you to play chess locally.
+ * Object of chess.game.LocalGame class will enable you to play chess locally.
  */
 public class LocalGame implements Game, Serializable {
 
@@ -36,7 +36,6 @@ public class LocalGame implements Game, Serializable {
 
         boardframe.setVisible(true);
     }
-
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
@@ -73,11 +72,6 @@ public class LocalGame implements Game, Serializable {
                     System.exit(0);
                 }
             }
-
-
-
         }
-
-
     }
 }
