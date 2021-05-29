@@ -23,8 +23,8 @@ public class Main {
     JButton btnPlayNetwork;
     JButton btnExit;
 
-    Main() {
-        frame = new JFrame("Chess");
+    public Main(String title) {
+        frame = new JFrame(title);
 
         //Boilerplate
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
@@ -64,6 +64,9 @@ public class Main {
         frame.setVisible(true);
     }
 
+    //Telescoping constructor
+    public Main() { this("Chess");}
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -79,6 +82,7 @@ public class Main {
         btnPlayNetwork = new JButton("Play networked");
         btnExit = new JButton("Exit");
 
+        //Create separation between components and center the component vertically
         frame.add(Box.createRigidArea(new Dimension(300, 75)));
         btnPlayLocal.setAlignmentX(Component.CENTER_ALIGNMENT);
         frame.add(btnPlayLocal);
