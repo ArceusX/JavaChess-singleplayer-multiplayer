@@ -39,7 +39,7 @@ public class Main {
         buttonPlayLocal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                new Local();
+                new LocalGame("Player1", "Player2");
             }
         });
 
