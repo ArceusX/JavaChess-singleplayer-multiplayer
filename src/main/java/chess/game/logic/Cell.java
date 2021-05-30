@@ -75,7 +75,6 @@ public class Cell implements ActionListener, Serializable {
     }
 
     void setImage() {
-
         if(occupyingPiece.getImage() != null) {
             btn.setIcon(occupyingPiece.getImage());
             btn.setDisabledIcon(occupyingPiece.getImage());
@@ -126,7 +125,7 @@ public class Cell implements ActionListener, Serializable {
 
             } else {
 
-                unhighlightPreviousPressed(this);
+                unHightliteCell(this);
 
                 if (occupyingPiece != null && matchColour(this)) {
                     highliteCell(this);
@@ -230,7 +229,7 @@ public class Cell implements ActionListener, Serializable {
 
         cellSelected.occupyingPiece = null;
 
-        unhighlightPreviousPressed(this);
+        unHightliteCell(this);
     }
 
     void removePieceAndPromote() {   //removes piece from highlighted cell and adds it to selected cell
@@ -261,7 +260,7 @@ public class Cell implements ActionListener, Serializable {
 
         cellSelected.occupyingPiece = null;
 
-        unhighlightPreviousPressed(this);
+        unHightliteCell(this);
 
         if(isNetworked)
             sendMoveOnNetwork(movedcells, promotedPiece);
@@ -282,14 +281,12 @@ public class Cell implements ActionListener, Serializable {
         return null;
     }
 
-
     void endGame() {
         if(checkmatedKingColour == Colour.WHITE) {
             JOptionPane.showMessageDialog(null,"Black wins!");
         } else {
             JOptionPane.showMessageDialog(null, "White wins!");
         }
-
         System.exit(0);
     }
 }

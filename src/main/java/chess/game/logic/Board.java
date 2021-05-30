@@ -228,8 +228,6 @@ public class Board {
         cells[row][3].setPiece(ChessPiece.QUEEN,c);
         cells[row][4].setPiece(ChessPiece.KING,c);
 
-
-
         cells[row][5].setPiece(ChessPiece.BISHOP,c);
         cells[row][6].setPiece(ChessPiece.KNIGHT,c);
         cells[row][7].setPiece(ChessPiece.ROOK,c);
@@ -254,9 +252,7 @@ public class Board {
         }
     }
 
-
-
-    static void unhighlightPreviousPressed(Cell c) {
+    static void unHightliteCell(Cell cell) {
 
         //legal moves' background is removed here
         if(cellSelected.legalToCoordinates != null)
@@ -598,7 +594,6 @@ public class Board {
                     }
                 }
             }
-
 
         } else {
             return null;
