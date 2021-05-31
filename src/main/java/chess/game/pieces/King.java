@@ -30,54 +30,54 @@ public class King extends Piece implements Serializable {
     }
 
     @Override
-    public List<Coordinate> getLegalMoves(Cell cell) {
+    public List<Coordinate> getLegalMoves(Cell fromCell) {
 
         List<Coordinate> legalToCoordinates = new ArrayList<>();
 
-        int cellRow = cell.getRow();
-        int cellCol = cell.getCol();
+        int row = fromCell.getRow();
+        int col = fromCell.getCol();
 
-        if(cellRow-1 >= 0) {
+        if(row-1 >= 0) {
             //row above king
-            if(cellCol-1 >= 0) {
-                if(isEmpty(cellRow-1,cellCol-1) || !sameColourPiece(cell,cellRow-1,cellCol-1))
-                    legalToCoordinates.add(new Coordinate(cellRow-1,cellCol-1));
+            if(col-1 >= 0) {
+                if(isEmpty(row-1,col-1) || !sameColourPiece(fromCell,row-1,col-1))
+                    legalToCoordinates.add(new Coordinate(row-1,col-1));
             }
 
-            if(isEmpty(cellRow-1,cellCol) || !sameColourPiece(cell,cellRow-1,cellCol))
-                legalToCoordinates.add(new Coordinate(cellRow-1,cellCol));
+            if(isEmpty(row-1,col) || !sameColourPiece(fromCell,row-1,col))
+                legalToCoordinates.add(new Coordinate(row-1,col));
 
-            if(cellCol+1 < 8) {
-                if(isEmpty(cellRow-1,cellCol+1) || !sameColourPiece(cell,cellRow-1,cellCol+1))
-                    legalToCoordinates.add(new Coordinate(cellRow-1,cellCol+1));
+            if(col+1 < 8) {
+                if(isEmpty(row-1,col+1) || !sameColourPiece(fromCell,row-1,col+1))
+                    legalToCoordinates.add(new Coordinate(row-1,col+1));
             }
         }
 
         //same row as king
 
-        if(cellCol-1 >= 0) {
-            if(isEmpty(cellRow,cellCol-1) || !sameColourPiece(cell,cellRow,cellCol-1))
-                legalToCoordinates.add(new Coordinate(cellRow,cellCol-1));
+        if(col-1 >= 0) {
+            if(isEmpty(row,col-1) || !sameColourPiece(fromCell,row,col-1))
+                legalToCoordinates.add(new Coordinate(row,col-1));
         }
 
-        if(cellCol+1 < 8) {
-            if(isEmpty(cellRow,cellCol+1) || !sameColourPiece(cell,cellRow,cellCol+1))
-                legalToCoordinates.add(new Coordinate(cellRow,cellCol+1));
+        if(col+1 < 8) {
+            if(isEmpty(row,col+1) || !sameColourPiece(fromCell,row,col+1))
+                legalToCoordinates.add(new Coordinate(row,col+1));
         }
 
-        if(cellRow+1 < 8) {
+        if(row+1 < 8) {
             //row below king
-            if(cellCol-1 >= 0) {
-                if(isEmpty(cellRow+1,cellCol-1) || !sameColourPiece(cell,cellRow+1,cellCol-1))
-                    legalToCoordinates.add(new Coordinate(cellRow+1,cellCol-1));
+            if(col-1 >= 0) {
+                if(isEmpty(row+1,col-1) || !sameColourPiece(fromCell,row+1,col-1))
+                    legalToCoordinates.add(new Coordinate(row+1,col-1));
             }
 
-            if(isEmpty(cellRow+1,cellCol) || !sameColourPiece(cell,cellRow+1,cellCol))
-                legalToCoordinates.add(new Coordinate(cellRow+1,cellCol));
+            if(isEmpty(row+1,col) || !sameColourPiece(fromCell,row+1,col))
+                legalToCoordinates.add(new Coordinate(row+1,col));
 
-            if(cellCol+1 < 8) {
-                if(isEmpty(cellRow+1,cellCol+1) || !sameColourPiece(cell,cellRow+1,cellCol+1))
-                    legalToCoordinates.add(new Coordinate(cellRow+1,cellCol+1));
+            if(col+1 < 8) {
+                if(isEmpty(row+1,col+1) || !sameColourPiece(fromCell,row+1,col+1))
+                    legalToCoordinates.add(new Coordinate(row+1,col+1));
             }
         }
 

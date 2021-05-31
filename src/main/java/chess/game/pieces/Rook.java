@@ -31,65 +31,65 @@ public class Rook extends Piece implements Serializable {
     }
 
     @Override
-    public List<Coordinate> getLegalMoves(Cell cell) {
+    public List<Coordinate> getLegalMoves(Cell fromCell) {
 
         List<Coordinate> legalToCoordinates = new ArrayList<>();
-        int cellrow = cell.getRow();
-        int cellcol = cell.getCol();
+        int row = fromCell.getRow();
+        int col = fromCell.getCol();
 
-        int rowptr;
-        int colptr;
+        int rowPtr;
+        int colPtr;
 
-        colptr = cellcol - 1;
+        colPtr = col - 1;
 
-        while (colptr >= 0) {
+        while (colPtr >= 0) {
 
-            if (isEmpty(cellrow, colptr)) {
-                legalToCoordinates.add(new Coordinate(cellrow, colptr));
-                colptr--;
-            } else if (!sameColourPiece(cell, cellrow, colptr)) {
-                legalToCoordinates.add(new Coordinate(cellrow, colptr));
+            if (isEmpty(row, colPtr)) {
+                legalToCoordinates.add(new Coordinate(row, colPtr));
+                colPtr--;
+            } else if (!sameColourPiece(fromCell, row, colPtr)) {
+                legalToCoordinates.add(new Coordinate(row, colPtr));
                 break;
             } else
                 break;
         }
-        colptr = cellcol + 1;
-        while (colptr <= 7) {
-            if (isEmpty(cellrow, colptr)) {
-                legalToCoordinates.add(new Coordinate(cellrow, colptr));
-                colptr++;
-            } else if (!sameColourPiece(cell, cellrow, colptr)) {
-                legalToCoordinates.add(new Coordinate(cellrow, colptr));
-                break;
-            } else
-                break;
-        }
-
-        rowptr = cellrow + 1;
-        while (rowptr <= 7) {
-            if (isEmpty(rowptr, cellcol)) {
-                legalToCoordinates.add(new Coordinate(rowptr, cellcol));
-                rowptr++;
-            } else if (!sameColourPiece(cell, rowptr, cellcol)) {
-                legalToCoordinates.add(new Coordinate(rowptr, cellcol));
+        colPtr = col + 1;
+        while (colPtr <= 7) {
+            if (isEmpty(row, colPtr)) {
+                legalToCoordinates.add(new Coordinate(row, colPtr));
+                colPtr++;
+            } else if (!sameColourPiece(fromCell, row, colPtr)) {
+                legalToCoordinates.add(new Coordinate(row, colPtr));
                 break;
             } else
                 break;
         }
 
-        rowptr = cellrow - 1;
-        while (rowptr >= 0) {
-            if (isEmpty(rowptr, cellcol)) {
-                legalToCoordinates.add(new Coordinate(rowptr, cellcol));
-                rowptr--;
-            } else if (!sameColourPiece(cell, rowptr, cellcol)) {
-                legalToCoordinates.add(new Coordinate(rowptr, cellcol));
+        rowPtr = row + 1;
+        while (rowPtr <= 7) {
+            if (isEmpty(rowPtr, col)) {
+                legalToCoordinates.add(new Coordinate(rowPtr, col));
+                rowPtr++;
+            } else if (!sameColourPiece(fromCell, rowPtr, col)) {
+                legalToCoordinates.add(new Coordinate(rowPtr, col));
                 break;
             } else
                 break;
         }
 
-        List<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(cell);
+        rowPtr = row - 1;
+        while (rowPtr >= 0) {
+            if (isEmpty(rowPtr, col)) {
+                legalToCoordinates.add(new Coordinate(rowPtr, col));
+                rowPtr--;
+            } else if (!sameColourPiece(fromCell, rowPtr, col)) {
+                legalToCoordinates.add(new Coordinate(rowPtr, col));
+                break;
+            } else
+                break;
+        }
+
+        List<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(fromCell);
 
         if(pinnedcoordinates != null) {
 

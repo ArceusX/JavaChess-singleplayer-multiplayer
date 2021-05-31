@@ -31,28 +31,28 @@ public class Bishop extends Piece implements Serializable {
     }
 
     @Override
-    public List<Coordinate> getLegalMoves(Cell cell) {
+    public List<Coordinate> getLegalMoves(Cell fromCell) {
 
         List<Coordinate> legalToCoordinates = new ArrayList<>();
-        int cellRow = cell.getRow();
-        int cellCol = cell.getCol();
+        int row = fromCell.getRow();
+        int col = fromCell.getCol();
 
-        int rowptr;
-        int colptr;
+        int rowPtr;
+        int colPtr;
 
-        rowptr = cellRow-1;
-        colptr = cellCol-1;
+        rowPtr = row-1;
+        colPtr = col-1;
 
-        while (rowptr >= 0 && colptr >= 0){
+        while (rowPtr >= 0 && colPtr >= 0){
 
-            if(isEmpty(rowptr,colptr)) {
-                legalToCoordinates.add(new Coordinate(rowptr, colptr));
-                rowptr--;
-                colptr--;
+            if(isEmpty(rowPtr,colPtr)) {
+                legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
+                rowPtr--;
+                colPtr--;
             }
 
-            else if (!sameColourPiece(cell,rowptr,colptr)){
-                legalToCoordinates.add(new Coordinate(rowptr, colptr));
+            else if (!sameColourPiece(fromCell,rowPtr,colPtr)){
+                legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
                 break;
             }
 
@@ -60,19 +60,19 @@ public class Bishop extends Piece implements Serializable {
                 break;
         }
 
-        rowptr = cellRow+1;
-        colptr = cellCol-1;
+        rowPtr = row+1;
+        colPtr = col-1;
 
-        while(rowptr <= 7 && colptr >= 0){
+        while(rowPtr <= 7 && colPtr >= 0){
 
-            if(isEmpty(rowptr,colptr)) {
-                legalToCoordinates.add(new Coordinate(rowptr, colptr));
-                rowptr++;
-                colptr--;
+            if(isEmpty(rowPtr,colPtr)) {
+                legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
+                rowPtr++;
+                colPtr--;
             }
 
-            else if (!sameColourPiece(cell,rowptr,colptr)){
-                legalToCoordinates.add(new Coordinate(rowptr, colptr));
+            else if (!sameColourPiece(fromCell,rowPtr,colPtr)){
+                legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
                 break;
             }
 
@@ -80,19 +80,19 @@ public class Bishop extends Piece implements Serializable {
                 break;
         }
 
-        rowptr = cellRow-1;
-        colptr = cellCol+1;
+        rowPtr = row-1;
+        colPtr = col+1;
 
-        while(rowptr >= 0 && colptr <= 7){
+        while(rowPtr >= 0 && colPtr <= 7){
 
-            if(isEmpty(rowptr,colptr)) {
-                legalToCoordinates.add(new Coordinate(rowptr, colptr));
-                rowptr--;
-                colptr++;
+            if(isEmpty(rowPtr,colPtr)) {
+                legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
+                rowPtr--;
+                colPtr++;
             }
 
-            else if (!sameColourPiece(cell,rowptr,colptr)){
-                legalToCoordinates.add(new Coordinate(rowptr, colptr));
+            else if (!sameColourPiece(fromCell,rowPtr,colPtr)){
+                legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
                 break;
             }
 
@@ -100,19 +100,19 @@ public class Bishop extends Piece implements Serializable {
                 break;
         }
 
-        rowptr = cellRow+1;
-        colptr = cellCol+1;
+        rowPtr = row+1;
+        colPtr = col+1;
 
-        while(rowptr <= 7 && colptr <= 7){
+        while(rowPtr <= 7 && colPtr <= 7){
 
-            if(isEmpty(rowptr,colptr)) {
-                legalToCoordinates.add(new Coordinate(rowptr, colptr));
-                rowptr++;
-                colptr++;
+            if(isEmpty(rowPtr,colPtr)) {
+                legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
+                rowPtr++;
+                colPtr++;
             }
 
-            else if (!sameColourPiece(cell,rowptr,colptr)){
-                legalToCoordinates.add(new Coordinate(rowptr, colptr));
+            else if (!sameColourPiece(fromCell,rowPtr,colPtr)){
+                legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
                 break;
             }
 
@@ -120,7 +120,7 @@ public class Bishop extends Piece implements Serializable {
                 break;
         }
 
-        List<Coordinate> pinnedCoordinates = isKingAttackedIfPieceRemoved(cell);
+        List<Coordinate> pinnedCoordinates = isKingAttackedIfPieceRemoved(fromCell);
 
         if(pinnedCoordinates != null) {
 

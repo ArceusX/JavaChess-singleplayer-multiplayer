@@ -31,52 +31,52 @@ public class Knight extends Piece implements Serializable {
     }
 
     @Override
-    public List<Coordinate> getLegalMoves(Cell cell) {
+    public List<Coordinate> getLegalMoves(Cell fromCell) {
 
         List<Coordinate> legalToCoordinates = new ArrayList<>();
-        int cellRow = cell.getRow();
-        int cellCol = cell.getCol();
+        int row = fromCell.getRow();
+        int col = fromCell.getCol();
 
-        if(cellRow-1 >= 0) {
-            if(cellCol-2 >= 0 && !sameColourPiece(cell,cellRow-1,cellCol-2)) {
-                legalToCoordinates.add(new Coordinate(cellRow-1,cellCol-2));
+        if(row-1 >= 0) {
+            if(col-2 >= 0 && !sameColourPiece(fromCell,row-1,col-2)) {
+                legalToCoordinates.add(new Coordinate(row-1,col-2));
             }
 
-            if(cellCol+2 <= 7 && !sameColourPiece(cell,cellRow-1,cellCol+2)) {
-                legalToCoordinates.add(new Coordinate(cellRow-1,cellCol+2));
-            }
-        }
-
-        if(cellRow-2 >= 0) {
-            if(cellCol-1 >= 0 && !sameColourPiece(cell,cellRow-2,cellCol-1)) {
-                legalToCoordinates.add(new Coordinate(cellRow-2,cellCol-1));
-            }
-
-            if(cellCol+1 <= 7 && !sameColourPiece(cell,cellRow-2,cellCol+1)) {
-                legalToCoordinates.add(new Coordinate(cellRow-2, cellCol+1));
+            if(col+2 <= 7 && !sameColourPiece(fromCell,row-1,col+2)) {
+                legalToCoordinates.add(new Coordinate(row-1,col+2));
             }
         }
 
-        if(cellRow+1 <= 7) {
-            if(cellCol-2 >= 0 && !sameColourPiece(cell,cellRow+1,cellCol-2)) {
-                legalToCoordinates.add(new Coordinate(cellRow+1,cellCol-2));
+        if(row-2 >= 0) {
+            if(col-1 >= 0 && !sameColourPiece(fromCell,row-2,col-1)) {
+                legalToCoordinates.add(new Coordinate(row-2,col-1));
             }
 
-            if(cellCol+2 <= 7 && !sameColourPiece(cell,cellRow+1,cellCol+2)) {
-                legalToCoordinates.add(new Coordinate(cellRow+1,cellCol+2));
+            if(col+1 <= 7 && !sameColourPiece(fromCell,row-2,col+1)) {
+                legalToCoordinates.add(new Coordinate(row-2, col+1));
             }
         }
 
-        if(cellRow+2 <= 7) {
-            if(cellCol-1 >= 0 && !sameColourPiece(cell,cellRow+2,cellCol-1)) {
-                legalToCoordinates.add(new Coordinate(cellRow+2,cellCol-1));
+        if(row+1 <= 7) {
+            if(col-2 >= 0 && !sameColourPiece(fromCell,row+1,col-2)) {
+                legalToCoordinates.add(new Coordinate(row+1,col-2));
             }
 
-            if(cellCol+1 <= 7 && !sameColourPiece(cell,cellRow+2,cellCol+1)) {
-                legalToCoordinates.add(new Coordinate(cellRow+2, cellCol+1));
+            if(col+2 <= 7 && !sameColourPiece(fromCell,row+1,col+2)) {
+                legalToCoordinates.add(new Coordinate(row+1,col+2));
             }
         }
-        List<Coordinate> pinnedCoordinates = isKingAttackedIfPieceRemoved(cell);
+
+        if(row+2 <= 7) {
+            if(col-1 >= 0 && !sameColourPiece(fromCell,row+2,col-1)) {
+                legalToCoordinates.add(new Coordinate(row+2,col-1));
+            }
+
+            if(col+1 <= 7 && !sameColourPiece(fromCell,row+2,col+1)) {
+                legalToCoordinates.add(new Coordinate(row+2, col+1));
+            }
+        }
+        List<Coordinate> pinnedCoordinates = isKingAttackedIfPieceRemoved(fromCell);
 
         if(pinnedCoordinates != null) {
             return intersection(pinnedCoordinates,legalToCoordinates);

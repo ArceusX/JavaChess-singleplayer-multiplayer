@@ -21,7 +21,7 @@ public abstract class Piece implements Serializable {
     //Set to false when Piece is removed
     boolean isInPlay;
 
-    public abstract List<Coordinate> getLegalMoves(Cell cell);
+    public abstract List<Coordinate> getLegalMoves(Cell fromCell);
 
     ImageIcon createImageIcon(String path) {
 

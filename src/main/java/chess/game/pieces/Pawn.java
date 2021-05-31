@@ -31,49 +31,48 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public List<Coordinate> getLegalMoves(Cell cell) {
+    public List<Coordinate> getLegalMoves(Cell fromCell) {
 
-        ArrayList<Coordinate> legalToCoordinates = new ArrayList<Coordinate>();
-        int cellrow = cell.getRow();
-        int cellcol = cell.getCol();
+        ArrayList<Coordinate> legalToCoordinates = new ArrayList<>();
+        int row = fromCell.getRow();
+        int col = fromCell.getCol();
 
-        if (colour == Colour.WHITE)
-        {
-            if (isEmpty(cellrow-1,cellcol)) {
+        if (colour == Colour.WHITE) {
+            if (isEmpty(row-1,col)) {
 
-                if(cellrow ==6 && isEmpty(cellrow-2,cellcol))
-                    legalToCoordinates.add(new Coordinate(cellrow-2,cellcol));
+                if(row ==6 && isEmpty(row-2,col))
+                    legalToCoordinates.add(new Coordinate(row-2,col));
 
-                legalToCoordinates.add(new Coordinate(cellrow - 1, cellcol));
+                legalToCoordinates.add(new Coordinate(row - 1, col));
             }
-            if(cellcol > 0 && !sameColourPiece(cell,cellrow-1,cellcol-1) && !isEmpty(cellrow-1,cellcol-1))
-                legalToCoordinates.add(new Coordinate(cellrow-1,cellcol-1));
+            if(col > 0 && !sameColourPiece(fromCell,row-1,col-1) && !isEmpty(row-1,col-1))
+                legalToCoordinates.add(new Coordinate(row-1,col-1));
 
-            if(cellcol < 7 && !sameColourPiece(cell,cellrow-1,cellcol+1) && !isEmpty(cellrow-1,cellcol+1))
-                legalToCoordinates.add(new Coordinate(cellrow-1,cellcol+1));
+            if(col < 7 && !sameColourPiece(fromCell,row-1,col+1) && !isEmpty(row-1,col+1))
+                legalToCoordinates.add(new Coordinate(row-1,col+1));
 
-            //if(cellrow == 1)  pawn promotion
+            //if(row == 1)  pawn promotion
         }
 
         else {
-            if (isEmpty(cellrow+1,cellcol)) {
+            if (isEmpty(row+1,col)) {
 
-                if(cellrow ==1 && isEmpty(cellrow+2,cellcol) )
-                    legalToCoordinates.add(new Coordinate(cellrow+2,cellcol));
+                if(row ==1 && isEmpty(row+2,col) )
+                    legalToCoordinates.add(new Coordinate(row+2,col));
 
-                legalToCoordinates.add(new Coordinate(cellrow + 1, cellcol));
+                legalToCoordinates.add(new Coordinate(row + 1, col));
 
             }
 
-            if(cellcol > 0 && !sameColourPiece(cell,cellrow+1,cellcol-1) && !isEmpty(cellrow+1,cellcol-1))
-                legalToCoordinates.add(new Coordinate(cellrow+1,cellcol-1));
+            if(col > 0 && !sameColourPiece(fromCell,row+1,col-1) && !isEmpty(row+1,col-1))
+                legalToCoordinates.add(new Coordinate(row+1,col-1));
 
-            if(cellcol < 7 && !sameColourPiece(cell,cellrow+1,cellcol+1) && !isEmpty(cellrow+1,cellcol+1))
-                legalToCoordinates.add(new Coordinate(cellrow+1,cellcol+1));
+            if(col < 7 && !sameColourPiece(fromCell,row+1,col+1) && !isEmpty(row+1,col+1))
+                legalToCoordinates.add(new Coordinate(row+1,col+1));
 
         }
 
-        List<Coordinate> pinnedCoordinates = isKingAttackedIfPieceRemoved(cell);
+        List<Coordinate> pinnedCoordinates = isKingAttackedIfPieceRemoved(fromCell);
 
         if(pinnedCoordinates != null) {
             return intersection(pinnedCoordinates, legalToCoordinates);
