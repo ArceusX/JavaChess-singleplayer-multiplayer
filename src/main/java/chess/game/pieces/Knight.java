@@ -28,43 +28,44 @@ public class Knight extends Piece implements Serializable {
         int row = fromCell.getRow();
         int col = fromCell.getCol();
 
-        if(row-1 >= 0) {
-            if(col-2 >= 0 && !isMatchedColour(fromCell,row-1,col-2)) {
-                legalToCoordinates.add(new Coordinate(row-1,col-2));
+        if (row - 1 >= 0) {
+            //Check the cells to which the Knight can move that is one row above
+            if (col - 2 >= 0 && !isMatchedColour(fromCell, row - 1, col - 2)) {
+                legalToCoordinates.add(new Coordinate(row - 1, col - 2));
             }
 
-            if(col+2 <= 7 && !isMatchedColour(fromCell,row-1,col+2)) {
+            if (col + 2 < 8 && !isMatchedColour(fromCell,row - 1,col + 2)) {
                 legalToCoordinates.add(new Coordinate(row-1,col+2));
             }
+
+            if (row - 2 >= 0) {
+                if (col - 1 >= 0 && !isMatchedColour(fromCell, row - 2, col - 1)) {
+                    legalToCoordinates.add(new Coordinate(row - 2, col - 1));
+                }
+
+                if (col+1 <= 7 && !isMatchedColour(fromCell,row - 2,col + 1)) {
+                    legalToCoordinates.add(new Coordinate(row - 2, col + 1));
+                }
+            }
         }
 
-        if(row-2 >= 0) {
-            if(col-1 >= 0 && !isMatchedColour(fromCell,row-2,col-1)) {
-                legalToCoordinates.add(new Coordinate(row-2,col-1));
+        if (row + 1 < 8) {
+            if (col - 2 >= 0 && !isMatchedColour(fromCell,row + 1,col - 2)) {
+                legalToCoordinates.add(new Coordinate(row + 1,col - 2));
             }
 
-            if(col+1 <= 7 && !isMatchedColour(fromCell,row-2,col+1)) {
-                legalToCoordinates.add(new Coordinate(row-2, col+1));
-            }
-        }
-
-        if(row+1 <= 7) {
-            if(col-2 >= 0 && !isMatchedColour(fromCell,row+1,col-2)) {
-                legalToCoordinates.add(new Coordinate(row+1,col-2));
-            }
-
-            if(col+2 <= 7 && !isMatchedColour(fromCell,row+1,col+2)) {
+            if (col + 2 < 8 && !isMatchedColour(fromCell, row + 1, col + 2)) {
                 legalToCoordinates.add(new Coordinate(row+1,col+2));
             }
-        }
 
-        if(row+2 <= 7) {
-            if(col-1 >= 0 && !isMatchedColour(fromCell,row+2,col-1)) {
-                legalToCoordinates.add(new Coordinate(row+2,col-1));
-            }
+            if (row + 2 < 8) {
+                if (col - 1 >= 0 && !isMatchedColour(fromCell, row + 2, col - 1)) {
+                    legalToCoordinates.add(new Coordinate(row + 2, col - 1));
+                }
 
-            if(col+1 <= 7 && !isMatchedColour(fromCell,row+2,col+1)) {
-                legalToCoordinates.add(new Coordinate(row+2, col+1));
+                if (col + 1 < 8 && !isMatchedColour(fromCell, row + 2, col + 1)) {
+                    legalToCoordinates.add(new Coordinate(row + 2, col + 1));
+                }
             }
         }
         List<Coordinate> pinnedCoordinates = isKingAttackedIfPieceRemoved(fromCell);

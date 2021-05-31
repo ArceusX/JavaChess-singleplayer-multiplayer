@@ -40,39 +40,38 @@ public class Cell implements ActionListener, Serializable {
         btn.setBackground(color);
     }
 
-    void addToJPanel(JPanel jp) {
-        jp.add(btn);
+    void addToJPanel(JPanel panel) {
+        panel.add(btn);
     }
 
     public void setPiece(ChessPiece P, Colour colour) {
-            switch(P) {
-                case PAWN:
-                    occupyingPiece = new Pawn(colour);
-                    break;
+        switch(P) {
+        case PAWN:
+            occupyingPiece = new Pawn(colour);
+            break;
 
-                case ROOK:
-                    occupyingPiece = new Rook(colour);
-                    break;
+        case ROOK:
+            occupyingPiece = new Rook(colour);
+            break;
 
-                case KNIGHT:
-                    occupyingPiece = new Knight(colour);
-                    break;
+        case KNIGHT:
+            occupyingPiece = new Knight(colour);
+            break;
 
-                case BISHOP:
-                    occupyingPiece = new Bishop(colour);
-                    break;
+        case BISHOP:
+            occupyingPiece = new Bishop(colour);
+            break;
 
-                case QUEEN:
-                    occupyingPiece = new Queen(colour);
-                    break;
+        case QUEEN:
+            occupyingPiece = new Queen(colour);
+            break;
 
-                case KING:
-                    occupyingPiece = new King(colour);
-                    break;
-            }
+        case KING:
+            occupyingPiece = new King(colour);
+            break;
+        }
 
-            if (occupyingPiece != null) setImage();
-
+        if (occupyingPiece != null) setImage();
     }
 
     void setImage() {
