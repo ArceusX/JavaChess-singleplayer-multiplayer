@@ -7,6 +7,7 @@ import chess.game.logic.ChessPiece;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import static chess.game.logic.Board.isEmpty;
 import static chess.game.logic.Board.isKingAttackedIfPieceRemoved;
@@ -30,9 +31,9 @@ public class Rook extends Piece implements Serializable {
     }
 
     @Override
-    public ArrayList<Coordinate> getLegalMoves(Cell cell) {
+    public List<Coordinate> getLegalMoves(Cell cell) {
 
-        ArrayList<Coordinate> legalToCoordinates = new ArrayList<Coordinate>();
+        List<Coordinate> legalToCoordinates = new ArrayList<>();
         int cellrow = cell.getRow();
         int cellcol = cell.getCol();
 
@@ -88,7 +89,7 @@ public class Rook extends Piece implements Serializable {
                 break;
         }
 
-        ArrayList<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(cell);
+        List<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(cell);
 
         if(pinnedcoordinates != null) {
 

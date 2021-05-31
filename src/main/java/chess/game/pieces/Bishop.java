@@ -7,6 +7,7 @@ import chess.game.logic.ChessPiece;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import static chess.game.logic.Board.isEmpty;
 import static chess.game.logic.Board.isKingAttackedIfPieceRemoved;
@@ -30,9 +31,9 @@ public class Bishop extends Piece implements Serializable {
     }
 
     @Override
-    public ArrayList<Coordinate> getLegalMoves(Cell cell) {
+    public List<Coordinate> getLegalMoves(Cell cell) {
 
-        ArrayList<Coordinate> legalToCoordinates = new ArrayList<>();
+        List<Coordinate> legalToCoordinates = new ArrayList<>();
         int cellRow = cell.getRow();
         int cellCol = cell.getCol();
 
@@ -119,11 +120,11 @@ public class Bishop extends Piece implements Serializable {
                 break;
         }
 
-        ArrayList<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(cell);
+        List<Coordinate> pinnedCoordinates = isKingAttackedIfPieceRemoved(cell);
 
-        if(pinnedcoordinates != null) {
+        if(pinnedCoordinates != null) {
 
-            return intersection(pinnedcoordinates,legalToCoordinates);
+            return intersection(pinnedCoordinates,legalToCoordinates);
         }
         return legalToCoordinates;
     }

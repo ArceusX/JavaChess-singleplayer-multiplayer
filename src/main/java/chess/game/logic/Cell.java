@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
+import java.util.List;
 import java.util.ArrayList;
 
 import static chess.game.logic.Board.*;
@@ -21,7 +22,7 @@ public class Cell implements ActionListener, Serializable {
     public Piece occupyingPiece;
     Coordinate coordinate;
     Colour colour;
-    public ArrayList<Coordinate> legalToCoordinates;
+    public List<Coordinate> legalToCoordinates;
 
     public Cell(int row, int col) {
         btn = new JButton();
@@ -159,13 +160,15 @@ public class Cell implements ActionListener, Serializable {
             return occupyingPiece.colour;
     }
 
-    public static boolean contains(ArrayList<Coordinate> C, Coordinate position) {       //we can't use highlightedcell.legalToCoordinates.contains(cellposition) because it compares the objects and not object.row & object.col
+    public static boolean contains(List<Coordinate> C, Coordinate position) {       //we can't use highlightedcell.legalToCoordinates.contains(cellposition) because it compares the objects and not object.row & object.col
 
-        if(C != null)
-            for(Coordinate cord : C) {
-                if(cord.row == position.row && cord.col == position.col)
+        if (C != null) {
+            for (Coordinate cord : C) {
+                if(cord.row == position.row && cord.col == position.col) {
                     return true;
+                }
             }
+        }
 
         return false;
     }
@@ -197,13 +200,14 @@ public class Cell implements ActionListener, Serializable {
     void removePieceAndAdd() {   //removes piece from highlighted cell and adds it to selected cell
 
         //removing piece from highlightedcell
-        ArrayList<Coordinate> movedcells = new ArrayList<Coordinate>();
+        List<Coordinate> movedcells = new ArrayList<>();
 
         movedcells.add(cellSelected.coordinate);
         movedcells.add(this.coordinate);
 
-        if(isNetworked)
+        if(isNetworked) {
             sendMoveOnNetwork(movedcells);
+        }
 
         cellSelected.btn.setIcon(null);   //removes icon from highlightedcell
 

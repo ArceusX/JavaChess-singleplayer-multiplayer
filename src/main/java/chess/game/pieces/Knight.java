@@ -6,6 +6,7 @@ import chess.game.logic.Coordinate;
 import chess.game.logic.ChessPiece;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.ArrayList;
 
 import static chess.game.logic.Board.isKingAttackedIfPieceRemoved;
@@ -30,57 +31,55 @@ public class Knight extends Piece implements Serializable {
     }
 
     @Override
-    public ArrayList<Coordinate> getLegalMoves(Cell cell) {
+    public List<Coordinate> getLegalMoves(Cell cell) {
 
-        ArrayList<Coordinate> legalToCoordinates = new ArrayList<Coordinate>();
-        int cellrow = cell.getRow();
-        int cellcol = cell.getCol();
+        List<Coordinate> legalToCoordinates = new ArrayList<>();
+        int cellRow = cell.getRow();
+        int cellCol = cell.getCol();
 
-        if(cellrow-1 >= 0) {
-            if(cellcol-2 >= 0 && !sameColourPiece(cell,cellrow-1,cellcol-2)) {
-                legalToCoordinates.add(new Coordinate(cellrow-1,cellcol-2));
+        if(cellRow-1 >= 0) {
+            if(cellCol-2 >= 0 && !sameColourPiece(cell,cellRow-1,cellCol-2)) {
+                legalToCoordinates.add(new Coordinate(cellRow-1,cellCol-2));
             }
 
-            if(cellcol+2 <= 7 && !sameColourPiece(cell,cellrow-1,cellcol+2)) {
-                legalToCoordinates.add(new Coordinate(cellrow-1,cellcol+2));
-            }
-        }
-
-        if(cellrow-2 >= 0) {
-            if(cellcol-1 >= 0 && !sameColourPiece(cell,cellrow-2,cellcol-1)) {
-                legalToCoordinates.add(new Coordinate(cellrow-2,cellcol-1));
-            }
-
-            if(cellcol+1 <= 7 && !sameColourPiece(cell,cellrow-2,cellcol+1)) {
-                legalToCoordinates.add(new Coordinate(cellrow-2, cellcol+1));
+            if(cellCol+2 <= 7 && !sameColourPiece(cell,cellRow-1,cellCol+2)) {
+                legalToCoordinates.add(new Coordinate(cellRow-1,cellCol+2));
             }
         }
 
-        if(cellrow+1 <= 7) {
-            if(cellcol-2 >= 0 && !sameColourPiece(cell,cellrow+1,cellcol-2)) {
-                legalToCoordinates.add(new Coordinate(cellrow+1,cellcol-2));
+        if(cellRow-2 >= 0) {
+            if(cellCol-1 >= 0 && !sameColourPiece(cell,cellRow-2,cellCol-1)) {
+                legalToCoordinates.add(new Coordinate(cellRow-2,cellCol-1));
             }
 
-            if(cellcol+2 <= 7 && !sameColourPiece(cell,cellrow+1,cellcol+2)) {
-                legalToCoordinates.add(new Coordinate(cellrow+1,cellcol+2));
+            if(cellCol+1 <= 7 && !sameColourPiece(cell,cellRow-2,cellCol+1)) {
+                legalToCoordinates.add(new Coordinate(cellRow-2, cellCol+1));
+            }
+        }
+
+        if(cellRow+1 <= 7) {
+            if(cellCol-2 >= 0 && !sameColourPiece(cell,cellRow+1,cellCol-2)) {
+                legalToCoordinates.add(new Coordinate(cellRow+1,cellCol-2));
+            }
+
+            if(cellCol+2 <= 7 && !sameColourPiece(cell,cellRow+1,cellCol+2)) {
+                legalToCoordinates.add(new Coordinate(cellRow+1,cellCol+2));
             }
         }
 
-        if(cellrow+2 <= 7) {
-            if(cellcol-1 >= 0 && !sameColourPiece(cell,cellrow+2,cellcol-1)) {
-                legalToCoordinates.add(new Coordinate(cellrow+2,cellcol-1));
+        if(cellRow+2 <= 7) {
+            if(cellCol-1 >= 0 && !sameColourPiece(cell,cellRow+2,cellCol-1)) {
+                legalToCoordinates.add(new Coordinate(cellRow+2,cellCol-1));
             }
 
-            if(cellcol+1 <= 7 && !sameColourPiece(cell,cellrow+2,cellcol+1)) {
-                legalToCoordinates.add(new Coordinate(cellrow+2, cellcol+1));
+            if(cellCol+1 <= 7 && !sameColourPiece(cell,cellRow+2,cellCol+1)) {
+                legalToCoordinates.add(new Coordinate(cellRow+2, cellCol+1));
             }
         }
-        ArrayList<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(cell);
+        List<Coordinate> pinnedCoordinates = isKingAttackedIfPieceRemoved(cell);
 
-        if(pinnedcoordinates != null) {
-
-            return intersection(pinnedcoordinates,legalToCoordinates);
-            //fill this
+        if(pinnedCoordinates != null) {
+            return intersection(pinnedCoordinates,legalToCoordinates);
         }
 
         return legalToCoordinates;

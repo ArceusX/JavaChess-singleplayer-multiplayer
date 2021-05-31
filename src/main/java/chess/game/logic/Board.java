@@ -3,6 +3,7 @@ package chess.game.logic;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.util.List;
 import java.util.ArrayList;
 
 import static chess.game.network.Connect.modifyConnectNetworkTurn;
@@ -75,7 +76,7 @@ public class Board {
     }
 
     //Send network data to the opponent
-    public static void sendMoveOnNetwork(ArrayList<Coordinate> movedCells, ChessPiece promotionPiece) {
+    public static void sendMoveOnNetwork(List<Coordinate> movedCells, ChessPiece promotionPiece) {
         try {
             board.outputStream.flush();
             board.outputStream.writeObject(movedCells);
@@ -91,7 +92,7 @@ public class Board {
         }
     }
 
-    public static void sendMoveOnNetwork(ArrayList<Coordinate> movedCells) {
+    public static void sendMoveOnNetwork(List<Coordinate> movedCells) {
         try {
             board.outputStream.flush();
             board.outputStream.writeObject(movedCells);
@@ -319,10 +320,10 @@ public class Board {
             turn = Colour.BLACK;
     }
 
-    public static ArrayList<Coordinate> isKingAttackedIfPieceRemoved(Cell originalcell) {
+    public static List<Coordinate> isKingAttackedIfPieceRemoved(Cell originalcell) {
 
         Coordinate path;
-        ArrayList<Coordinate> legalcoordinateswhenpinned = new ArrayList<Coordinate>();
+        List<Coordinate> legalcoordinateswhenpinned = new ArrayList<>();
 
         if(originalcell.occupyingPiece.colour == Colour.WHITE) {
 

@@ -6,6 +6,7 @@ import chess.game.logic.Coordinate;
 import chess.game.logic.ChessPiece;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static chess.game.logic.Board.isEmpty;
 import static chess.game.logic.Board.isKingAttackedIfPieceRemoved;
@@ -30,7 +31,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public ArrayList<Coordinate> getLegalMoves(Cell cell) {
+    public List<Coordinate> getLegalMoves(Cell cell) {
 
         ArrayList<Coordinate> legalToCoordinates = new ArrayList<Coordinate>();
         int cellrow = cell.getRow();
@@ -54,8 +55,7 @@ public class Pawn extends Piece {
             //if(cellrow == 1)  pawn promotion
         }
 
-        else
-        {
+        else {
             if (isEmpty(cellrow+1,cellcol)) {
 
                 if(cellrow ==1 && isEmpty(cellrow+2,cellcol) )
@@ -73,12 +73,10 @@ public class Pawn extends Piece {
 
         }
 
-        ArrayList<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(cell);
+        List<Coordinate> pinnedCoordinates = isKingAttackedIfPieceRemoved(cell);
 
-        if(pinnedcoordinates != null) {
-
-            return intersection(pinnedcoordinates,legalToCoordinates);
-            //fill this
+        if(pinnedCoordinates != null) {
+            return intersection(pinnedCoordinates, legalToCoordinates);
         }
 
         return legalToCoordinates;

@@ -7,6 +7,7 @@ import chess.game.logic.ChessPiece;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import static chess.game.logic.Board.isEmpty;
 import static chess.game.logic.Board.isKingAttackedIfPieceRemoved;
@@ -29,66 +30,66 @@ public class Queen extends Piece implements Serializable {
     }
 
     @Override
-    public ArrayList<Coordinate> getLegalMoves(Cell cell) {
+    public List<Coordinate> getLegalMoves(Cell cell) {
 
-        ArrayList<Coordinate> legalToCoordinates = new ArrayList<Coordinate>();
-        int cellrow = cell.getRow();
-        int cellcol = cell.getCol();
+        List<Coordinate> legalToCoordinates = new ArrayList<>();
+        int cellRow = cell.getRow();
+        int cellCol = cell.getCol();
 
         int rowptr;
         int colptr;
 
-        colptr = cellcol - 1;
+        colptr = cellCol - 1;
 
         while (colptr >= 0) {
 
-            if (isEmpty(cellrow, colptr)) {
-                legalToCoordinates.add(new Coordinate(cellrow, colptr));
+            if (isEmpty(cellRow, colptr)) {
+                legalToCoordinates.add(new Coordinate(cellRow, colptr));
                 colptr--;
-            } else if (!sameColourPiece(cell, cellrow, colptr)) {
-                legalToCoordinates.add(new Coordinate(cellrow, colptr));
+            } else if (!sameColourPiece(cell, cellRow, colptr)) {
+                legalToCoordinates.add(new Coordinate(cellRow, colptr));
                 break;
             } else
                 break;
         }
-        colptr = cellcol + 1;
+        colptr = cellCol + 1;
         while (colptr <= 7 ) {
-            if (isEmpty(cellrow, colptr)) {
-                legalToCoordinates.add(new Coordinate(cellrow, colptr));
+            if (isEmpty(cellRow, colptr)) {
+                legalToCoordinates.add(new Coordinate(cellRow, colptr));
                 colptr++;
-            } else if (!sameColourPiece(cell, cellrow, colptr)) {
-                legalToCoordinates.add(new Coordinate(cellrow, colptr));
+            } else if (!sameColourPiece(cell, cellRow, colptr)) {
+                legalToCoordinates.add(new Coordinate(cellRow, colptr));
                 break;
             } else
                 break;
         }
 
-        rowptr = cellrow + 1;
+        rowptr = cellRow + 1;
         while (rowptr <= 7) {
-            if (isEmpty(rowptr, cellcol)) {
-                legalToCoordinates.add(new Coordinate(rowptr, cellcol));
+            if (isEmpty(rowptr, cellCol)) {
+                legalToCoordinates.add(new Coordinate(rowptr, cellCol));
                 rowptr++;
-            } else if (!sameColourPiece(cell, rowptr, cellcol)) {
-                legalToCoordinates.add(new Coordinate(rowptr, cellcol));
+            } else if (!sameColourPiece(cell, rowptr, cellCol)) {
+                legalToCoordinates.add(new Coordinate(rowptr, cellCol));
                 break;
             } else
                 break;
         }
 
-        rowptr = cellrow - 1;
+        rowptr = cellRow - 1;
         while (rowptr >= 0) {
-            if (isEmpty(rowptr, cellcol)) {
-                legalToCoordinates.add(new Coordinate(rowptr, cellcol));
+            if (isEmpty(rowptr, cellCol)) {
+                legalToCoordinates.add(new Coordinate(rowptr, cellCol));
                 rowptr--;
-            } else if (!sameColourPiece(cell, rowptr, cellcol)) {
-                legalToCoordinates.add(new Coordinate(rowptr, cellcol));
+            } else if (!sameColourPiece(cell, rowptr, cellCol)) {
+                legalToCoordinates.add(new Coordinate(rowptr, cellCol));
                 break;
             } else
                 break;
         }
 
-        rowptr = cellrow-1;
-        colptr = cellcol-1;
+        rowptr = cellRow-1;
+        colptr = cellCol-1;
 
         while(rowptr >= 0 && colptr >= 0){
 
@@ -107,8 +108,8 @@ public class Queen extends Piece implements Serializable {
                 break;
         }
 
-        rowptr = cellrow+1;
-        colptr = cellcol-1;
+        rowptr = cellRow+1;
+        colptr = cellCol-1;
 
         while(rowptr <= 7 && colptr >= 0){
 
@@ -127,8 +128,8 @@ public class Queen extends Piece implements Serializable {
                 break;
         }
 
-        rowptr = cellrow-1;
-        colptr = cellcol+1;
+        rowptr = cellRow-1;
+        colptr = cellCol+1;
 
         while(rowptr >= 0 && colptr <= 7){
 
@@ -147,8 +148,8 @@ public class Queen extends Piece implements Serializable {
                 break;
         }
 
-        rowptr = cellrow+1;
-        colptr = cellcol+1;
+        rowptr = cellRow+1;
+        colptr = cellCol+1;
 
         while(rowptr <= 7 && colptr <= 7){
 
@@ -167,7 +168,7 @@ public class Queen extends Piece implements Serializable {
                 break;
         }
 
-        ArrayList<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(cell);
+        List<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(cell);
 
         if(pinnedcoordinates != null) {
 

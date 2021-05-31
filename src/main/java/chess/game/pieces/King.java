@@ -7,6 +7,7 @@ import chess.game.logic.ChessPiece;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import static chess.game.logic.Board.isEmpty;
 import static chess.game.logic.Board.sameColourPiece;
@@ -29,60 +30,56 @@ public class King extends Piece implements Serializable {
     }
 
     @Override
-    public ArrayList<Coordinate> getLegalMoves(Cell cell) {
+    public List<Coordinate> getLegalMoves(Cell cell) {
 
-        ArrayList<Coordinate> legalToCoordinates = new ArrayList<Coordinate>();
+        List<Coordinate> legalToCoordinates = new ArrayList<>();
 
-        int cellrow = cell.getRow();
-        int cellcol = cell.getCol();
+        int cellRow = cell.getRow();
+        int cellCol = cell.getCol();
 
-        if(cellrow-1 >= 0) {
+        if(cellRow-1 >= 0) {
             //row above king
-            if(cellcol-1 >= 0) {
-                if(isEmpty(cellrow-1,cellcol-1) || !sameColourPiece(cell,cellrow-1,cellcol-1))
-                    legalToCoordinates.add(new Coordinate(cellrow-1,cellcol-1));
+            if(cellCol-1 >= 0) {
+                if(isEmpty(cellRow-1,cellCol-1) || !sameColourPiece(cell,cellRow-1,cellCol-1))
+                    legalToCoordinates.add(new Coordinate(cellRow-1,cellCol-1));
             }
 
-            if(isEmpty(cellrow-1,cellcol) || !sameColourPiece(cell,cellrow-1,cellcol))
-                legalToCoordinates.add(new Coordinate(cellrow-1,cellcol));
+            if(isEmpty(cellRow-1,cellCol) || !sameColourPiece(cell,cellRow-1,cellCol))
+                legalToCoordinates.add(new Coordinate(cellRow-1,cellCol));
 
-            if(cellcol+1 < 8) {
-                if(isEmpty(cellrow-1,cellcol+1) || !sameColourPiece(cell,cellrow-1,cellcol+1))
-                    legalToCoordinates.add(new Coordinate(cellrow-1,cellcol+1));
+            if(cellCol+1 < 8) {
+                if(isEmpty(cellRow-1,cellCol+1) || !sameColourPiece(cell,cellRow-1,cellCol+1))
+                    legalToCoordinates.add(new Coordinate(cellRow-1,cellCol+1));
             }
         }
 
         //same row as king
 
-        if(cellcol-1 >= 0) {
-            if(isEmpty(cellrow,cellcol-1) || !sameColourPiece(cell,cellrow,cellcol-1))
-                legalToCoordinates.add(new Coordinate(cellrow,cellcol-1));
+        if(cellCol-1 >= 0) {
+            if(isEmpty(cellRow,cellCol-1) || !sameColourPiece(cell,cellRow,cellCol-1))
+                legalToCoordinates.add(new Coordinate(cellRow,cellCol-1));
         }
 
-        if(cellcol+1 < 8) {
-            if(isEmpty(cellrow,cellcol+1) || !sameColourPiece(cell,cellrow,cellcol+1))
-                legalToCoordinates.add(new Coordinate(cellrow,cellcol+1));
+        if(cellCol+1 < 8) {
+            if(isEmpty(cellRow,cellCol+1) || !sameColourPiece(cell,cellRow,cellCol+1))
+                legalToCoordinates.add(new Coordinate(cellRow,cellCol+1));
         }
 
-
-
-        if(cellrow+1 < 8) {
+        if(cellRow+1 < 8) {
             //row below king
-            if(cellcol-1 >= 0) {
-                if(isEmpty(cellrow+1,cellcol-1) || !sameColourPiece(cell,cellrow+1,cellcol-1))
-                    legalToCoordinates.add(new Coordinate(cellrow+1,cellcol-1));
+            if(cellCol-1 >= 0) {
+                if(isEmpty(cellRow+1,cellCol-1) || !sameColourPiece(cell,cellRow+1,cellCol-1))
+                    legalToCoordinates.add(new Coordinate(cellRow+1,cellCol-1));
             }
 
-            if(isEmpty(cellrow+1,cellcol) || !sameColourPiece(cell,cellrow+1,cellcol))
-                legalToCoordinates.add(new Coordinate(cellrow+1,cellcol));
+            if(isEmpty(cellRow+1,cellCol) || !sameColourPiece(cell,cellRow+1,cellCol))
+                legalToCoordinates.add(new Coordinate(cellRow+1,cellCol));
 
-            if(cellcol+1 < 8) {
-                if(isEmpty(cellrow+1,cellcol+1) || !sameColourPiece(cell,cellrow+1,cellcol+1))
-                    legalToCoordinates.add(new Coordinate(cellrow+1,cellcol+1));
+            if(cellCol+1 < 8) {
+                if(isEmpty(cellRow+1,cellCol+1) || !sameColourPiece(cell,cellRow+1,cellCol+1))
+                    legalToCoordinates.add(new Coordinate(cellRow+1,cellCol+1));
             }
         }
-
-
 
         //from all these legal moves, check if move results in a check.
 

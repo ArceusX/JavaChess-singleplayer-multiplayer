@@ -9,9 +9,9 @@ import javax.swing.*;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import static chess.game.logic.Cell.contains;
-
 
 public abstract class Piece implements Serializable {
 
@@ -21,7 +21,7 @@ public abstract class Piece implements Serializable {
     //Set to false when Piece is removed
     boolean isInPlay;
 
-    public abstract ArrayList<Coordinate> getLegalMoves(Cell cell);
+    public abstract List<Coordinate> getLegalMoves(Cell cell);
 
     ImageIcon createImageIcon(String path) {
 
@@ -35,12 +35,12 @@ public abstract class Piece implements Serializable {
         return image;
     }
 
-    public ArrayList<Coordinate> intersection(ArrayList<Coordinate> list1, ArrayList<Coordinate> list2) {
+    public List<Coordinate> intersection(List<Coordinate> list1, List<Coordinate> list2) {
 
-        ArrayList<Coordinate> list = new ArrayList<>();
+        List<Coordinate> list = new ArrayList<>();
 
         for(Coordinate c : list1) {
-            if(contains(list2,c)) {
+            if(contains(list2 ,c)) {
                 list.add(c);
             }
         }
