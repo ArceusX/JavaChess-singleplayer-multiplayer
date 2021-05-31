@@ -14,19 +14,11 @@ import static chess.game.logic.Board.isMatchedColour;
 
 public class King extends Piece implements Serializable {
     public King(Colour colour) {
-        name = ChessPiece.KING;
+        super(colour);
 
-        if (colour == Colour.WHITE) {
-            image = createImageIcon("img/WhiteKing.png");
-            this.colour = Colour.WHITE;
-
-        }
-        else {
-            image = createImageIcon("img/BlackKing.png");
-            this.colour = Colour.BLACK;
-        }
-
-        isInPlay = true;
+        name = ChessPiece.BISHOP;
+        image = (colour == Colour.WHITE) ?
+                createImageIcon("img/WhiteKing.png") : createImageIcon("img/BlackKing.png");
     }
 
     @Override

@@ -13,21 +13,12 @@ import static chess.game.logic.Board.isKingAttackedIfPieceRemoved;
 import static chess.game.logic.Board.isMatchedColour;
 
 public class Knight extends Piece implements Serializable {
+    public Knight(Colour colour) {
+        super(colour);
 
-    public Knight(Colour c) {
-        name = ChessPiece.KNIGHT;
-
-        if (colour == Colour.WHITE) {
-            image = createImageIcon("img/WhiteKnight.png");
-            this.colour = Colour.WHITE;
-
-        }
-        else {
-            image = createImageIcon("img/BlackKnight.png");
-            this.colour = Colour.BLACK;
-        }
-
-        isInPlay = true;
+        name = ChessPiece.BISHOP;
+        image = (colour == Colour.WHITE) ?
+                createImageIcon("img/WhiteKnight.png") : createImageIcon("img/BlackKnight.png");
     }
 
     @Override

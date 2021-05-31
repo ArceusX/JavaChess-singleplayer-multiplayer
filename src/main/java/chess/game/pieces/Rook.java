@@ -16,18 +16,11 @@ import static chess.game.logic.Board.isMatchedColour;
 public class Rook extends Piece implements Serializable {
 
     public Rook(Colour colour) {
-        name = ChessPiece.ROOK;
+        super(colour);
 
-        if (colour == Colour.WHITE) {
-            image = createImageIcon("img/WhiteRook.png");
-            this.colour = Colour.WHITE;
-
-        }
-        else {
-            image = createImageIcon("img/BlackRook.png");
-            this.colour = Colour.BLACK;
-        }
-        isInPlay = true;
+        name = ChessPiece.BISHOP;
+        image = (colour == Colour.WHITE) ?
+                createImageIcon("img/WhiteRook.png") : createImageIcon("img/BlackRook.png");
     }
 
     @Override

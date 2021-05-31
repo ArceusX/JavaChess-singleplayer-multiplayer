@@ -15,25 +15,17 @@ import static chess.game.logic.Board.isMatchedColour;
 public class Pawn extends Piece {
 
     public Pawn(Colour colour) {
+        super(colour);
 
-        name = ChessPiece.PAWN;
-        if (colour == Colour.WHITE) {
-            image = createImageIcon("img/WhitePawn.png");
-            this.colour = Colour.WHITE;
-        }
-        else {
-            image = createImageIcon("img/BlackPawn.png");
-            this.colour = Colour.BLACK;
-        }
-
-        isInPlay = true;
-
+        name = ChessPiece.BISHOP;
+        image = (colour == Colour.WHITE) ?
+                createImageIcon("img/WhitePawn.png") : createImageIcon("img/BlackPawn.png");
     }
 
     @Override
     public List<Coordinate> getLegalMoves(Cell fromCell) {
 
-        ArrayList<Coordinate> legalToCoordinates = new ArrayList<>();
+        List<Coordinate> legalToCoordinates = new ArrayList<>();
         int row = fromCell.getRow();
         int col = fromCell.getCol();
 

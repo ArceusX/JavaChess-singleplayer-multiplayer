@@ -21,6 +21,11 @@ public abstract class Piece implements Serializable {
     //Set to false when Piece is removed
     boolean isInPlay;
 
+    public Piece (Colour colour) {
+        this.colour = colour;
+        isInPlay = true;
+    }
+
     public abstract List<Coordinate> getLegalMoves(Cell fromCell);
 
     ImageIcon createImageIcon(String path) {

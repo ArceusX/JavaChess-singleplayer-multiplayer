@@ -15,19 +15,11 @@ import static chess.game.logic.Board.isMatchedColour;
 
 public class Bishop extends Piece implements Serializable {
     public Bishop(Colour colour) {
+        super(colour);
 
         name = ChessPiece.BISHOP;
-        if (colour == Colour.WHITE) {
-            image = createImageIcon("img/WhiteBishop.png");
-            this.colour = Colour.WHITE;
-
-        }
-        else {
-            image = createImageIcon("img/BlackBishop.png");
-            this.colour = Colour.BLACK;
-        }
-
-        isInPlay = true;
+        image = (colour == Colour.WHITE) ?
+                createImageIcon("img/WhiteBishop.png") : createImageIcon("img/BlackBishop.png");
     }
 
     @Override
