@@ -191,19 +191,14 @@ public class Board {
 
                 cells[row][col] = new Cell(row, col);
 
-                if (cells[row][col].colour == Colour.WHITE) {
-                    //White cells will have backgroundColour "SeaShell" to create constrast with White Pieces
-                    cells[row][col].setBackgroundColour(255,245,238);
-                } else {
-                    //Black cells will have backgroundColour "SeaShell" to create constrast with Black Pieces
-                    cells[row][col].setBackgroundColour(128,128,0);
-                }
-
+                //White cells have backgroundColour "SeaShell" to create contrast with White Pieces
+                //Black cells have backgroundColour "Olive" to create contrast with Black Pieces
+                cells[row][col].setBackgroundColor(cells[row][col].colour.getBackgroundColor());
                 cells[row][col].addToJPanel(panel);
             }
 
             if (row == 0 || row == 7) {
-                setMajorPieces( row);
+                setMajorPieces(row);
             } else if (row == 1 || row == 6) {
                 setPawns(row);
             }
@@ -212,43 +207,30 @@ public class Board {
         wKingCell = cells[7][4];
         bKingCell = cells[0][4];
     }
+
     void setMajorPieces(int row) {
 
-        Colour c;
-        if(row==0) {
-            c = Colour.BLACK;
-        } else {
-            c = Colour.WHITE;
-        }
+        Colour colour = (row == 0) ? Colour.BLACK : Colour.WHITE;
 
-        cells[row][0].setPiece(ChessPiece.ROOK,c);
-        cells[row][1].setPiece(ChessPiece.KNIGHT,c);
-        cells[row][2].setPiece(ChessPiece.BISHOP,c);
+        cells[row][0].setPiece(ChessPiece.ROOK, colour);
+        cells[row][1].setPiece(ChessPiece.KNIGHT, colour);
+        cells[row][2].setPiece(ChessPiece.BISHOP, colour);
 
-        cells[row][3].setPiece(ChessPiece.QUEEN,c);
-        cells[row][4].setPiece(ChessPiece.KING,c);
+        cells[row][3].setPiece(ChessPiece.QUEEN, colour);
+        cells[row][4].setPiece(ChessPiece.KING, colour);
 
-        cells[row][5].setPiece(ChessPiece.BISHOP,c);
-        cells[row][6].setPiece(ChessPiece.KNIGHT,c);
-        cells[row][7].setPiece(ChessPiece.ROOK,c);
+        cells[row][5].setPiece(ChessPiece.BISHOP, colour);
+        cells[row][6].setPiece(ChessPiece.KNIGHT, colour);
+        cells[row][7].setPiece(ChessPiece.ROOK, colour);
     }
 
     void setPawns(int row) {
-        if(row == 1) {
-
-            //creates 8 black pawns
-            for(int i=0 ; i<8 ; i++) {
-                cells[row][i].setPiece(ChessPiece.PAWN,Colour.BLACK);
-            }
-
-
-        } else {
-
-            //creates 8 white pawns
-            for(int i=0 ; i<8 ; i++) {
-                cells[row][i].setPiece(ChessPiece.PAWN,Colour.WHITE);
-            }
+        Colour colour = (row == 1) ? Colour.BLACK : Colour.WHITE;
+        //creates 8 black pawns
+        for(int i=0 ; i<8 ; i++) {
+            cells[row][i].setPiece(ChessPiece.PAWN, colour);
         }
+
     }
 
     static void unHightliteCell(Cell cell) {

@@ -16,7 +16,7 @@ public class Knight extends Piece implements Serializable {
     public Knight(Colour colour) {
         super(colour);
 
-        name = ChessPiece.BISHOP;
+        name = ChessPiece.KNIGHT;
         image = (colour == Colour.WHITE) ?
                 createImageIcon("img/WhiteKnight.png") : createImageIcon("img/BlackKnight.png");
     }

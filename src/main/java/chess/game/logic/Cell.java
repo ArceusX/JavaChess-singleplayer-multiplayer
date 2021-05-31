@@ -36,8 +36,8 @@ public class Cell implements ActionListener, Serializable {
         btn.addActionListener(this);
     }
 
-    void setBackgroundColour(int r, int g, int b) {
-        btn.setBackground(new Color(r, g, b));
+    void setBackgroundColor(Color color) {
+        btn.setBackground(color);
     }
 
     void addToJPanel(JPanel jp) {
@@ -269,16 +269,18 @@ public class Cell implements ActionListener, Serializable {
     ChessPiece getPromopiece(){
         ImageIcon img = new ImageIcon("img/PromotionPieces.png");
 
-        String[] options = {"Queen", "Bishop","Knight", "Rook"};
-        int row = JOptionPane.showOptionDialog(null, img ,"Pawn Promotion",JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,null,options,options[0]);
+        String[] options = {"Queen", "Bishop", "Knight", "Rook"};
+        int row = JOptionPane.showOptionDialog(null, img, "Promote to...",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, img, options, options[0]);
         System.out.println(row);
-        switch (row){
+
+        switch (row) {
             case 0: return ChessPiece.QUEEN;
-            case 1: return  ChessPiece.KNIGHT;
-            case 2: return ChessPiece.BISHOP;
+            case 1: return ChessPiece.BISHOP;
+            case 2: return  ChessPiece.KNIGHT;
             case 3: return ChessPiece.ROOK;
+            default: return null;
         }
-        return null;
     }
 
     void endGame() {

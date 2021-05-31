@@ -17,7 +17,7 @@ public class Pawn extends Piece {
     public Pawn(Colour colour) {
         super(colour);
 
-        name = ChessPiece.BISHOP;
+        name = ChessPiece.PAWN;
         image = (colour == Colour.WHITE) ?
                 createImageIcon("img/WhitePawn.png") : createImageIcon("img/BlackPawn.png");
     }

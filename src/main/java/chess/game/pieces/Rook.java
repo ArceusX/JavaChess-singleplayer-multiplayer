@@ -18,7 +18,7 @@ public class Rook extends Piece implements Serializable {
     public Rook(Colour colour) {
         super(colour);
 
-        name = ChessPiece.BISHOP;
+        name = ChessPiece.ROOK;
         image = (colour == Colour.WHITE) ?
                 createImageIcon("img/WhiteRook.png") : createImageIcon("img/BlackRook.png");
     }
