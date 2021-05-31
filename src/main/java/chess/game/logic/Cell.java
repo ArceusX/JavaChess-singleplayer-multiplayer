@@ -138,22 +138,23 @@ public class Cell implements ActionListener, Serializable {
         return coordinate.col;
     }
 
-    Coordinate subtract(Cell c1) {
-        int row = c1.getRow() - this.getRow();
-        int col = c1.getCol() - this.getCol();
+    Coordinate subtract(Cell fromCell) {
 
-        return new Coordinate(row,col);
+        int row = fromCell.getRow() - this.getRow();
+        int col = fromCell.getCol() - this.getCol();
+
+        return new Coordinate(row, col);
     }
 
     public ChessPiece getPieceName() {
-        if(occupyingPiece == null)
+        if (occupyingPiece == null)
             return null;
         else
             return occupyingPiece.name;
     }
 
     public Colour getPieceColour() {
-        if(occupyingPiece == null)
+        if (occupyingPiece == null)
             return Colour.NONE;
         else
             return occupyingPiece.colour;
