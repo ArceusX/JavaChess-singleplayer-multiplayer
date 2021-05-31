@@ -21,20 +21,23 @@ public abstract class Piece implements Serializable {
     //Set to false when Piece is removed
     boolean isInPlay;
 
-    public abstract ArrayList<Coordinate> legalMoves(Cell c);
+    public abstract ArrayList<Coordinate> getLegalMoves(Cell cell);
 
     ImageIcon createImageIcon(String path) {
 
         if(new File(path).exists()) {
             return new ImageIcon(path);
-        } else {
+        } else
             return null;
-        }
+    }
+
+    public ImageIcon getImage() {
+        return image;
     }
 
     public ArrayList<Coordinate> intersection(ArrayList<Coordinate> list1, ArrayList<Coordinate> list2) {
 
-        ArrayList<Coordinate> list = new ArrayList<Coordinate>();
+        ArrayList<Coordinate> list = new ArrayList<>();
 
         for(Coordinate c : list1) {
             if(contains(list2,c)) {
@@ -43,9 +46,5 @@ public abstract class Piece implements Serializable {
         }
 
         return list;
-    }
-
-    public ImageIcon getImage() {
-        return image;
     }
 }

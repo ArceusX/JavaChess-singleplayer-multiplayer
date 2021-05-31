@@ -124,7 +124,7 @@ public class Connect implements Game {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                board = new Board(inputStream, outputStream,false);
+                board = new Board(inputStream, outputStream, false);
                 frame.add(board.panel, BorderLayout.CENTER);
                 frame.validate();
             }
@@ -133,7 +133,7 @@ public class Connect implements Game {
     }
 
     public void playGame() throws IOException {
-        ArrayList<Coordinate> movedcells = new ArrayList<Coordinate>();
+        ArrayList<Coordinate> movedcells = new ArrayList<>();
         do {
             SwingUtilities.isEventDispatchThread();     //no idea why i have to include this line
                                                         //if i remove above line only keep the if condition, everything acts weird

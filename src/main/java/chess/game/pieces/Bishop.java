@@ -13,35 +13,36 @@ import static chess.game.logic.Board.isKingAttackedIfPieceRemoved;
 import static chess.game.logic.Board.sameColourPiece;
 
 public class Bishop extends Piece implements Serializable {
-    public Bishop(Colour c) {
+    public Bishop(Colour colour) {
 
         name = ChessPiece.BISHOP;
-        if(c == Colour.BLACK) {
-            image = createImageIcon("img/BlackBishop.png");
-            colour = Colour.BLACK;
-            isInPlay = true;
+        if (colour == Colour.WHITE) {
+            image = createImageIcon("img/WhiteBishop.png");
+            this.colour = Colour.WHITE;
+
         }
         else {
-            image = createImageIcon("img/WhiteBishop.png");
-            colour = Colour.WHITE;
-            isInPlay = true;
+            image = createImageIcon("img/BlackBishop.png");
+            this.colour = Colour.BLACK;
         }
+
+        isInPlay = true;
     }
 
     @Override
-    public ArrayList<Coordinate> legalMoves(Cell c) {
+    public ArrayList<Coordinate> getLegalMoves(Cell cell) {
 
-        ArrayList<Coordinate> legalToCoordinates = new ArrayList<Coordinate>();
-        int cellrow = c.getRow();
-        int cellcol = c.getCol();
+        ArrayList<Coordinate> legalToCoordinates = new ArrayList<>();
+        int cellRow = cell.getRow();
+        int cellCol = cell.getCol();
 
         int rowptr;
         int colptr;
 
-        rowptr = cellrow-1;
-        colptr = cellcol-1;
+        rowptr = cellRow-1;
+        colptr = cellCol-1;
 
-        while(rowptr >= 0 && colptr >= 0){
+        while (rowptr >= 0 && colptr >= 0){
 
             if(isEmpty(rowptr,colptr)) {
                 legalToCoordinates.add(new Coordinate(rowptr, colptr));
@@ -49,7 +50,7 @@ public class Bishop extends Piece implements Serializable {
                 colptr--;
             }
 
-            else if (!sameColourPiece(c,rowptr,colptr)){
+            else if (!sameColourPiece(cell,rowptr,colptr)){
                 legalToCoordinates.add(new Coordinate(rowptr, colptr));
                 break;
             }
@@ -58,8 +59,8 @@ public class Bishop extends Piece implements Serializable {
                 break;
         }
 
-        rowptr = cellrow+1;
-        colptr = cellcol-1;
+        rowptr = cellRow+1;
+        colptr = cellCol-1;
 
         while(rowptr <= 7 && colptr >= 0){
 
@@ -69,7 +70,7 @@ public class Bishop extends Piece implements Serializable {
                 colptr--;
             }
 
-            else if (!sameColourPiece(c,rowptr,colptr)){
+            else if (!sameColourPiece(cell,rowptr,colptr)){
                 legalToCoordinates.add(new Coordinate(rowptr, colptr));
                 break;
             }
@@ -78,8 +79,8 @@ public class Bishop extends Piece implements Serializable {
                 break;
         }
 
-        rowptr = cellrow-1;
-        colptr = cellcol+1;
+        rowptr = cellRow-1;
+        colptr = cellCol+1;
 
         while(rowptr >= 0 && colptr <= 7){
 
@@ -89,7 +90,7 @@ public class Bishop extends Piece implements Serializable {
                 colptr++;
             }
 
-            else if (!sameColourPiece(c,rowptr,colptr)){
+            else if (!sameColourPiece(cell,rowptr,colptr)){
                 legalToCoordinates.add(new Coordinate(rowptr, colptr));
                 break;
             }
@@ -98,8 +99,8 @@ public class Bishop extends Piece implements Serializable {
                 break;
         }
 
-        rowptr = cellrow+1;
-        colptr = cellcol+1;
+        rowptr = cellRow+1;
+        colptr = cellCol+1;
 
         while(rowptr <= 7 && colptr <= 7){
 
@@ -109,7 +110,7 @@ public class Bishop extends Piece implements Serializable {
                 colptr++;
             }
 
-            else if (!sameColourPiece(c,rowptr,colptr)){
+            else if (!sameColourPiece(cell,rowptr,colptr)){
                 legalToCoordinates.add(new Coordinate(rowptr, colptr));
                 break;
             }
@@ -118,12 +119,11 @@ public class Bishop extends Piece implements Serializable {
                 break;
         }
 
-        ArrayList<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(c);
+        ArrayList<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(cell);
 
         if(pinnedcoordinates != null) {
 
             return intersection(pinnedcoordinates,legalToCoordinates);
-            //fill this
         }
         return legalToCoordinates;
     }

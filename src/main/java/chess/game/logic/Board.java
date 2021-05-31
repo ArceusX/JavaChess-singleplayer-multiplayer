@@ -75,27 +75,26 @@ public class Board {
     }
 
     //Send network data to the opponent
-    public static void sendMoveOnNetwork(ArrayList<Coordinate> movedcells, ChessPiece promotedpiece) {
+    public static void sendMoveOnNetwork(ArrayList<Coordinate> movedCells, ChessPiece promotionPiece) {
         try {
             board.outputStream.flush();
-            board.outputStream.writeObject(movedcells);
-            board.outputStream.writeObject(promotedpiece);
+            board.outputStream.writeObject(movedCells);
+            board.outputStream.writeObject(promotionPiece);
 
             if(isHost) {
                 modifyHostNetworkTurn(Colour.BLACK);
             } else {
                 modifyConnectNetworkTurn(Colour.WHITE);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void sendMoveOnNetwork(ArrayList<Coordinate> movedcells) {
+    public static void sendMoveOnNetwork(ArrayList<Coordinate> movedCells) {
         try {
             board.outputStream.flush();
-            board.outputStream.writeObject(movedcells);
+            board.outputStream.writeObject(movedCells);
 
             if(isHost) {
                 modifyHostNetworkTurn(Colour.BLACK);
@@ -114,13 +113,13 @@ public class Board {
             if (fromCell.occupyingPiece.colour == Colour.WHITE) {
                 return (fromCell.coordinate.row == 1) ? true : false;
             }
-
             else {
                 return (fromCell.coordinate.row == 6) ? true : false;
             }
         }
-        else
+        else {
             return false;
+        }
     }
 
     //Receive network data from the opponent
@@ -134,7 +133,7 @@ public class Board {
                 //Track the type of promotedPiece, be it a Queen, Knight, Bishop, or Rook
                 ChessPiece promotedPiece = (ChessPiece) board.inputStream.readObject();
 
-                fromCell.btn.setIcon(null);   //removes icon from highlightedcell
+                fromCell.btn.setIcon(null);   //removes icon from highlitedcell
                 if(toCell.occupyingPiece != null && toCell.occupyingPiece.name == ChessPiece.KING ) {
                     toCell.btn.setIcon(fromCell.occupyingPiece.getImage());
                     if(toCell.occupyingPiece.colour == Colour.WHITE)
@@ -146,7 +145,7 @@ public class Board {
                 fromCell.legalToCoordinates = null;
 
                 toCell.setPiece(promotedPiece, fromCell.occupyingPiece.colour);    //sets piece in selected cell
-                toCell.legalToCoordinates = toCell.occupyingPiece.legalMoves(toCell);
+                toCell.legalToCoordinates = toCell.occupyingPiece.getLegalMoves(toCell);
 
                 fromCell.occupyingPiece = null;
 
@@ -173,7 +172,7 @@ public class Board {
             fromCell.legalToCoordinates = null;
 
             toCell.setPiece(fromCell.occupyingPiece.name, fromCell.occupyingPiece.colour);    //sets piece in selected cell
-            toCell.legalToCoordinates = toCell.occupyingPiece.legalMoves(toCell);
+            toCell.legalToCoordinates = toCell.occupyingPiece.getLegalMoves(toCell);
 
             fromCell.occupyingPiece = null;
 
@@ -270,7 +269,7 @@ public class Board {
     static void highliteCell(Cell cell) {
         //Only highlite cell if it has an occupyingPiece and that Piece matches the colour of the turn player
         if(cell.occupyingPiece != null && matchColour(cell)) {
-            cell.legalToCoordinates = cell.occupyingPiece.legalMoves(cell);
+            cell.legalToCoordinates = cell.occupyingPiece.getLegalMoves(cell);
             cellSelected = cell;
             btnSelected = cell.btn;                                       //Cell's button generated the event.
             unselectedColor = btnSelected.getBackground();

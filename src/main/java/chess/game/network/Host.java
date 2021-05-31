@@ -125,7 +125,7 @@ public class Host implements Game {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                board = new Board(inputStream, outputStream,true);
+                board = new Board(inputStream, outputStream, true);
                 frame.add(board.panel, BorderLayout.CENTER);
                 frame.validate();
             }

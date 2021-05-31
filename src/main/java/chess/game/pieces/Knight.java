@@ -14,67 +14,68 @@ import static chess.game.logic.Board.sameColourPiece;
 public class Knight extends Piece implements Serializable {
 
     public Knight(Colour c) {
-
         name = ChessPiece.KNIGHT;
-        if(c == Colour.BLACK) {
-            image = createImageIcon("img/BlackKnight.png");
-            colour = Colour.BLACK;
-            isInPlay = true;
+
+        if (colour == Colour.WHITE) {
+            image = createImageIcon("img/WhiteKnight.png");
+            this.colour = Colour.WHITE;
+
         }
         else {
-            image = createImageIcon("img/WhiteKnight.png");
-            colour = Colour.WHITE;
-            isInPlay = true;
+            image = createImageIcon("img/BlackKnight.png");
+            this.colour = Colour.BLACK;
         }
+
+        isInPlay = true;
     }
 
     @Override
-    public ArrayList<Coordinate> legalMoves(Cell c) {
+    public ArrayList<Coordinate> getLegalMoves(Cell cell) {
 
         ArrayList<Coordinate> legalToCoordinates = new ArrayList<Coordinate>();
-        int cellrow = c.getRow();
-        int cellcol = c.getCol();
+        int cellrow = cell.getRow();
+        int cellcol = cell.getCol();
 
         if(cellrow-1 >= 0) {
-            if(cellcol-2 >= 0 && !sameColourPiece(c,cellrow-1,cellcol-2)) {
+            if(cellcol-2 >= 0 && !sameColourPiece(cell,cellrow-1,cellcol-2)) {
                 legalToCoordinates.add(new Coordinate(cellrow-1,cellcol-2));
             }
 
-            if(cellcol+2 <= 7 && !sameColourPiece(c,cellrow-1,cellcol+2)) {
+            if(cellcol+2 <= 7 && !sameColourPiece(cell,cellrow-1,cellcol+2)) {
                 legalToCoordinates.add(new Coordinate(cellrow-1,cellcol+2));
             }
         }
 
         if(cellrow-2 >= 0) {
-            if(cellcol-1 >= 0 && !sameColourPiece(c,cellrow-2,cellcol-1)) {
+            if(cellcol-1 >= 0 && !sameColourPiece(cell,cellrow-2,cellcol-1)) {
                 legalToCoordinates.add(new Coordinate(cellrow-2,cellcol-1));
             }
 
-            if(cellcol+1 <= 7 && !sameColourPiece(c,cellrow-2,cellcol+1)) {
+            if(cellcol+1 <= 7 && !sameColourPiece(cell,cellrow-2,cellcol+1)) {
                 legalToCoordinates.add(new Coordinate(cellrow-2, cellcol+1));
             }
         }
 
         if(cellrow+1 <= 7) {
-            if(cellcol-2 >= 0 && !sameColourPiece(c,cellrow+1,cellcol-2)) {
+            if(cellcol-2 >= 0 && !sameColourPiece(cell,cellrow+1,cellcol-2)) {
                 legalToCoordinates.add(new Coordinate(cellrow+1,cellcol-2));
             }
 
-            if(cellcol+2 <= 7 && !sameColourPiece(c,cellrow+1,cellcol+2)) {
+            if(cellcol+2 <= 7 && !sameColourPiece(cell,cellrow+1,cellcol+2)) {
                 legalToCoordinates.add(new Coordinate(cellrow+1,cellcol+2));
             }
         }
 
         if(cellrow+2 <= 7) {
-            if(cellcol-1 >= 0 && !sameColourPiece(c,cellrow+2,cellcol-1)) {
+            if(cellcol-1 >= 0 && !sameColourPiece(cell,cellrow+2,cellcol-1)) {
                 legalToCoordinates.add(new Coordinate(cellrow+2,cellcol-1));
             }
 
-            if(cellcol+1 <= 7 && !sameColourPiece(c,cellrow+2,cellcol+1)) {
+            if(cellcol+1 <= 7 && !sameColourPiece(cell,cellrow+2,cellcol+1)) {
                 legalToCoordinates.add(new Coordinate(cellrow+2, cellcol+1));
             }
         }
-        ArrayList<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(c);
+        ArrayList<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(cell);
 
         if(pinnedcoordinates != null) {
 

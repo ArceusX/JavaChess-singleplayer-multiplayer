@@ -13,29 +13,28 @@ import static chess.game.logic.Board.sameColourPiece;
 
 public class Pawn extends Piece {
 
-    public Pawn(Colour c) {
+    public Pawn(Colour colour) {
 
         name = ChessPiece.PAWN;
-        //black pawn
-        if(c == Colour.BLACK) {
-            image = createImageIcon("img/BlackPawn.png");
-            colour = Colour.BLACK;
-            isInPlay = true;
-        }
-        else {  //white pawn
+        if (colour == Colour.WHITE) {
             image = createImageIcon("img/WhitePawn.png");
-            colour = Colour.WHITE;
-            isInPlay = true;
+            this.colour = Colour.WHITE;
         }
+        else {
+            image = createImageIcon("img/BlackPawn.png");
+            this.colour = Colour.BLACK;
+        }
+
+        isInPlay = true;
 
     }
 
     @Override
-    public ArrayList<Coordinate> legalMoves(Cell c) {
+    public ArrayList<Coordinate> getLegalMoves(Cell cell) {
 
         ArrayList<Coordinate> legalToCoordinates = new ArrayList<Coordinate>();
-        int cellrow = c.getRow();
-        int cellcol = c.getCol();
+        int cellrow = cell.getRow();
+        int cellcol = cell.getCol();
 
         if (colour == Colour.WHITE)
         {
@@ -46,10 +45,10 @@ public class Pawn extends Piece {
 
                 legalToCoordinates.add(new Coordinate(cellrow - 1, cellcol));
             }
-            if(cellcol > 0 && !sameColourPiece(c,cellrow-1,cellcol-1) && !isEmpty(cellrow-1,cellcol-1))
+            if(cellcol > 0 && !sameColourPiece(cell,cellrow-1,cellcol-1) && !isEmpty(cellrow-1,cellcol-1))
                 legalToCoordinates.add(new Coordinate(cellrow-1,cellcol-1));
 
-            if(cellcol < 7 && !sameColourPiece(c,cellrow-1,cellcol+1) && !isEmpty(cellrow-1,cellcol+1))
+            if(cellcol < 7 && !sameColourPiece(cell,cellrow-1,cellcol+1) && !isEmpty(cellrow-1,cellcol+1))
                 legalToCoordinates.add(new Coordinate(cellrow-1,cellcol+1));
 
             //if(cellrow == 1)  pawn promotion
@@ -66,15 +65,15 @@ public class Pawn extends Piece {
 
             }
 
-            if(cellcol > 0 && !sameColourPiece(c,cellrow+1,cellcol-1) && !isEmpty(cellrow+1,cellcol-1))
+            if(cellcol > 0 && !sameColourPiece(cell,cellrow+1,cellcol-1) && !isEmpty(cellrow+1,cellcol-1))
                 legalToCoordinates.add(new Coordinate(cellrow+1,cellcol-1));
 
-            if(cellcol < 7 && !sameColourPiece(c,cellrow+1,cellcol+1) && !isEmpty(cellrow+1,cellcol+1))
+            if(cellcol < 7 && !sameColourPiece(cell,cellrow+1,cellcol+1) && !isEmpty(cellrow+1,cellcol+1))
                 legalToCoordinates.add(new Coordinate(cellrow+1,cellcol+1));
 
         }
 
-        ArrayList<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(c);
+        ArrayList<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(cell);
 
         if(pinnedcoordinates != null) {
 

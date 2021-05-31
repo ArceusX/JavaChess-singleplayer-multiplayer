@@ -86,7 +86,7 @@ public class Cell implements ActionListener, Serializable {
 
         if (!hasSelected) {
           /*  if(occupyingPiece != null)
-                legalToCoordinates = occupyingPiece.legalMoves(this);
+                legalToCoordinates = occupyingPiece.getLegalMoves(this);
           */  highliteCell(this);
         } else {
             /*
@@ -110,9 +110,7 @@ public class Cell implements ActionListener, Serializable {
                     removePieceAndPromote();
 
                 if(checkmatedKingColour != Colour.NONE) {
-
-                    if(isNetworked)
-                    {
+                    if(isNetworked) {
                         sendMoveOnNetwork(null);
                     }
 
@@ -121,8 +119,6 @@ public class Cell implements ActionListener, Serializable {
 
                 if(!isNetworked)    //change turn only if its not network mode
                     changeTurn();
-
-
             } else {
 
                 unHightliteCell(this);
@@ -225,7 +221,7 @@ public class Cell implements ActionListener, Serializable {
         cellSelected.legalToCoordinates = null;
 
         setPiece(cellSelected.occupyingPiece.name, turn);    //sets piece in selected cell
-        legalToCoordinates = occupyingPiece.legalMoves(this);
+        legalToCoordinates = occupyingPiece.getLegalMoves(this);
 
         cellSelected.occupyingPiece = null;
 
@@ -256,7 +252,7 @@ public class Cell implements ActionListener, Serializable {
 
         ChessPiece promotedPiece = getPromopiece();
         setPiece(promotedPiece, turn);    //sets piece in selected cell
-        legalToCoordinates = occupyingPiece.legalMoves(this);
+        legalToCoordinates = occupyingPiece.getLegalMoves(this);
 
         cellSelected.occupyingPiece = null;
 

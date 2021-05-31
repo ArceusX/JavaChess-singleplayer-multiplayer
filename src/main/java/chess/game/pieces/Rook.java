@@ -14,27 +14,27 @@ import static chess.game.logic.Board.sameColourPiece;
 
 public class Rook extends Piece implements Serializable {
 
-    public Rook(Colour c) {
-
+    public Rook(Colour colour) {
         name = ChessPiece.ROOK;
-        if(c == Colour.BLACK) {
-            image = createImageIcon("img/BlackRook.png");
-            colour = Colour.BLACK;
-            isInPlay = true;
+
+        if (colour == Colour.WHITE) {
+            image = createImageIcon("img/WhiteRook.png");
+            this.colour = Colour.WHITE;
+
         }
         else {
-            image = createImageIcon("img/WhiteRook.png");
-            colour = Colour.WHITE;
-            isInPlay = true;
+            image = createImageIcon("img/BlackRook.png");
+            this.colour = Colour.BLACK;
         }
+        isInPlay = true;
     }
 
     @Override
-    public ArrayList<Coordinate> legalMoves(Cell c) {
+    public ArrayList<Coordinate> getLegalMoves(Cell cell) {
 
         ArrayList<Coordinate> legalToCoordinates = new ArrayList<Coordinate>();
-        int cellrow = c.getRow();
-        int cellcol = c.getCol();
+        int cellrow = cell.getRow();
+        int cellcol = cell.getCol();
 
         int rowptr;
         int colptr;
@@ -46,7 +46,7 @@ public class Rook extends Piece implements Serializable {
             if (isEmpty(cellrow, colptr)) {
                 legalToCoordinates.add(new Coordinate(cellrow, colptr));
                 colptr--;
-            } else if (!sameColourPiece(c, cellrow, colptr)) {
+            } else if (!sameColourPiece(cell, cellrow, colptr)) {
                 legalToCoordinates.add(new Coordinate(cellrow, colptr));
                 break;
             } else
@@ -57,7 +57,7 @@ public class Rook extends Piece implements Serializable {
             if (isEmpty(cellrow, colptr)) {
                 legalToCoordinates.add(new Coordinate(cellrow, colptr));
                 colptr++;
-            } else if (!sameColourPiece(c, cellrow, colptr)) {
+            } else if (!sameColourPiece(cell, cellrow, colptr)) {
                 legalToCoordinates.add(new Coordinate(cellrow, colptr));
                 break;
             } else
@@ -69,7 +69,7 @@ public class Rook extends Piece implements Serializable {
             if (isEmpty(rowptr, cellcol)) {
                 legalToCoordinates.add(new Coordinate(rowptr, cellcol));
                 rowptr++;
-            } else if (!sameColourPiece(c, rowptr, cellcol)) {
+            } else if (!sameColourPiece(cell, rowptr, cellcol)) {
                 legalToCoordinates.add(new Coordinate(rowptr, cellcol));
                 break;
             } else
@@ -81,19 +81,18 @@ public class Rook extends Piece implements Serializable {
             if (isEmpty(rowptr, cellcol)) {
                 legalToCoordinates.add(new Coordinate(rowptr, cellcol));
                 rowptr--;
-            } else if (!sameColourPiece(c, rowptr, cellcol)) {
+            } else if (!sameColourPiece(cell, rowptr, cellcol)) {
                 legalToCoordinates.add(new Coordinate(rowptr, cellcol));
                 break;
             } else
                 break;
         }
 
-        ArrayList<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(c);
+        ArrayList<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(cell);
 
         if(pinnedcoordinates != null) {
 
             return intersection(pinnedcoordinates,legalToCoordinates);
-            //fill this
         }
 
         return legalToCoordinates;
