@@ -254,7 +254,7 @@ public class Cell implements ActionListener, Serializable {
         }
         cellSelected.legalToCoordinates = null;
 
-        ChessPiece promotedPiece = getPromopiece();
+        ChessPiece promotedPiece = getPromotion();
         setPiece(promotedPiece, turn);    //sets piece in selected cell
         legalToCoordinates = occupyingPiece.getLegalMoves(this);
 
@@ -266,15 +266,13 @@ public class Cell implements ActionListener, Serializable {
             sendMoveOnNetwork(movedcells, promotedPiece);
     }
 
-    ChessPiece getPromopiece(){
-        ImageIcon img = new ImageIcon("img/PromotionPieces.png");
+    ChessPiece getPromotion() {
 
         String[] options = {"Queen", "Bishop", "Knight", "Rook"};
-        int row = JOptionPane.showOptionDialog(null, img, "Promote to...",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, img, options, options[0]);
-        System.out.println(row);
+        int selected = JOptionPane.showOptionDialog(null, null, "Promote to...",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, new ImageIcon("img/PromotionPieces.png"), options, options[0]);
 
-        switch (row) {
+        switch (selected) {
             case 0: return ChessPiece.QUEEN;
             case 1: return ChessPiece.BISHOP;
             case 2: return  ChessPiece.KNIGHT;
