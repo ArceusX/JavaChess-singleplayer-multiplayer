@@ -234,8 +234,7 @@ public class Board {
     }
 
     void setPawns(int row) {
-
-        if(row==1) {
+        if(row == 1) {
 
             //creates 8 black pawns
             for(int i=0 ; i<8 ; i++) {
@@ -269,7 +268,7 @@ public class Board {
 
     static void highliteCell(Cell cell) {
         //Only highlite cell if it has an occupyingPiece and that Piece matches the colour of the turn player
-        if(cell.occupyingPiece != null && matchColour(cell)) {
+        if(cell.occupyingPiece != null && matchTurn(cell)) {
             cell.legalToCoordinates = cell.occupyingPiece.getLegalMoves(cell);
             cellSelected = cell;
             btnSelected = cell.btn;                                       //Cell's button generated the event.
@@ -287,37 +286,26 @@ public class Board {
         }
     }
 
-    static boolean matchColour(Cell cell) {
-        return turn == cell.occupyingPiece.colour ? true : false;
+    static boolean matchTurn(Cell cell) {
+        return (cell.occupyingPiece.colour == turn) ? true : false;
     }
 
     public static boolean isEmpty(int row, int col) {
-        if(cells[row][col].occupyingPiece == null)
-            return true;
-        else
-            return false;
+        return (cells[row][col].occupyingPiece == null) ? true : false;
     }
 
-    public static boolean sameColourPiece(Cell c, int newrow,int newcol) {
+    public static boolean isMatchedColour(Cell fromCell, int toRow, int toCol) {
 
-        if(isEmpty(newrow,newcol))
-            return false;
-
-        Colour originalpiececolour = c.occupyingPiece.colour;
-        Colour newpiececolour = cells[newrow][newcol].occupyingPiece.colour;
-
-        if(originalpiececolour == newpiececolour) {
-            return true;
-        } else {
+        if(isEmpty(toRow, toCol)) {
             return false;
         }
+
+        return (fromCell.occupyingPiece.colour == cells[toRow][toCol].occupyingPiece.colour) ?
+                true : false;
     }
 
-    public static void changeTurn() {
-        if(turn == Colour.BLACK)
-            turn = Colour.WHITE;
-        else
-            turn = Colour.BLACK;
+    public static void passTurn() {
+        turn = (turn == Colour.BLACK) ? Colour.WHITE : Colour.BLACK;
     }
 
     public static List<Coordinate> isKingAttackedIfPieceRemoved(Cell originalcell) {

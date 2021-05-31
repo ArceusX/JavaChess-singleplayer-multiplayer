@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import static chess.game.logic.Board.isKingAttackedIfPieceRemoved;
-import static chess.game.logic.Board.sameColourPiece;
+import static chess.game.logic.Board.isMatchedColour;
 
 public class Knight extends Piece implements Serializable {
 
@@ -38,41 +38,41 @@ public class Knight extends Piece implements Serializable {
         int col = fromCell.getCol();
 
         if(row-1 >= 0) {
-            if(col-2 >= 0 && !sameColourPiece(fromCell,row-1,col-2)) {
+            if(col-2 >= 0 && !isMatchedColour(fromCell,row-1,col-2)) {
                 legalToCoordinates.add(new Coordinate(row-1,col-2));
             }
 
-            if(col+2 <= 7 && !sameColourPiece(fromCell,row-1,col+2)) {
+            if(col+2 <= 7 && !isMatchedColour(fromCell,row-1,col+2)) {
                 legalToCoordinates.add(new Coordinate(row-1,col+2));
             }
         }
 
         if(row-2 >= 0) {
-            if(col-1 >= 0 && !sameColourPiece(fromCell,row-2,col-1)) {
+            if(col-1 >= 0 && !isMatchedColour(fromCell,row-2,col-1)) {
                 legalToCoordinates.add(new Coordinate(row-2,col-1));
             }
 
-            if(col+1 <= 7 && !sameColourPiece(fromCell,row-2,col+1)) {
+            if(col+1 <= 7 && !isMatchedColour(fromCell,row-2,col+1)) {
                 legalToCoordinates.add(new Coordinate(row-2, col+1));
             }
         }
 
         if(row+1 <= 7) {
-            if(col-2 >= 0 && !sameColourPiece(fromCell,row+1,col-2)) {
+            if(col-2 >= 0 && !isMatchedColour(fromCell,row+1,col-2)) {
                 legalToCoordinates.add(new Coordinate(row+1,col-2));
             }
 
-            if(col+2 <= 7 && !sameColourPiece(fromCell,row+1,col+2)) {
+            if(col+2 <= 7 && !isMatchedColour(fromCell,row+1,col+2)) {
                 legalToCoordinates.add(new Coordinate(row+1,col+2));
             }
         }
 
         if(row+2 <= 7) {
-            if(col-1 >= 0 && !sameColourPiece(fromCell,row+2,col-1)) {
+            if(col-1 >= 0 && !isMatchedColour(fromCell,row+2,col-1)) {
                 legalToCoordinates.add(new Coordinate(row+2,col-1));
             }
 
-            if(col+1 <= 7 && !sameColourPiece(fromCell,row+2,col+1)) {
+            if(col+1 <= 7 && !isMatchedColour(fromCell,row+2,col+1)) {
                 legalToCoordinates.add(new Coordinate(row+2, col+1));
             }
         }

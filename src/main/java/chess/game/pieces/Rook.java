@@ -11,7 +11,7 @@ import java.util.List;
 
 import static chess.game.logic.Board.isEmpty;
 import static chess.game.logic.Board.isKingAttackedIfPieceRemoved;
-import static chess.game.logic.Board.sameColourPiece;
+import static chess.game.logic.Board.isMatchedColour;
 
 public class Rook extends Piece implements Serializable {
 
@@ -47,7 +47,7 @@ public class Rook extends Piece implements Serializable {
             if (isEmpty(row, colPtr)) {
                 legalToCoordinates.add(new Coordinate(row, colPtr));
                 colPtr--;
-            } else if (!sameColourPiece(fromCell, row, colPtr)) {
+            } else if (!isMatchedColour(fromCell, row, colPtr)) {
                 legalToCoordinates.add(new Coordinate(row, colPtr));
                 break;
             } else
@@ -58,7 +58,7 @@ public class Rook extends Piece implements Serializable {
             if (isEmpty(row, colPtr)) {
                 legalToCoordinates.add(new Coordinate(row, colPtr));
                 colPtr++;
-            } else if (!sameColourPiece(fromCell, row, colPtr)) {
+            } else if (!isMatchedColour(fromCell, row, colPtr)) {
                 legalToCoordinates.add(new Coordinate(row, colPtr));
                 break;
             } else
@@ -70,7 +70,7 @@ public class Rook extends Piece implements Serializable {
             if (isEmpty(rowPtr, col)) {
                 legalToCoordinates.add(new Coordinate(rowPtr, col));
                 rowPtr++;
-            } else if (!sameColourPiece(fromCell, rowPtr, col)) {
+            } else if (!isMatchedColour(fromCell, rowPtr, col)) {
                 legalToCoordinates.add(new Coordinate(rowPtr, col));
                 break;
             } else
@@ -82,18 +82,17 @@ public class Rook extends Piece implements Serializable {
             if (isEmpty(rowPtr, col)) {
                 legalToCoordinates.add(new Coordinate(rowPtr, col));
                 rowPtr--;
-            } else if (!sameColourPiece(fromCell, rowPtr, col)) {
+            } else if (!isMatchedColour(fromCell, rowPtr, col)) {
                 legalToCoordinates.add(new Coordinate(rowPtr, col));
                 break;
             } else
                 break;
         }
 
-        List<Coordinate> pinnedcoordinates = isKingAttackedIfPieceRemoved(fromCell);
+        List<Coordinate> pinnedCoordinates = isKingAttackedIfPieceRemoved(fromCell);
 
-        if(pinnedcoordinates != null) {
-
-            return intersection(pinnedcoordinates,legalToCoordinates);
+        if(pinnedCoordinates != null) {
+            return intersection(pinnedCoordinates,legalToCoordinates);
         }
 
         return legalToCoordinates;

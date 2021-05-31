@@ -11,7 +11,7 @@ import java.util.List;
 
 import static chess.game.logic.Board.isEmpty;
 import static chess.game.logic.Board.isKingAttackedIfPieceRemoved;
-import static chess.game.logic.Board.sameColourPiece;
+import static chess.game.logic.Board.isMatchedColour;
 
 public class Bishop extends Piece implements Serializable {
     public Bishop(Colour colour) {
@@ -51,7 +51,7 @@ public class Bishop extends Piece implements Serializable {
                 colPtr--;
             }
 
-            else if (!sameColourPiece(fromCell,rowPtr,colPtr)){
+            else if (!isMatchedColour(fromCell,rowPtr,colPtr)){
                 legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
                 break;
             }
@@ -71,7 +71,7 @@ public class Bishop extends Piece implements Serializable {
                 colPtr--;
             }
 
-            else if (!sameColourPiece(fromCell,rowPtr,colPtr)){
+            else if (!isMatchedColour(fromCell,rowPtr,colPtr)){
                 legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
                 break;
             }
@@ -91,7 +91,7 @@ public class Bishop extends Piece implements Serializable {
                 colPtr++;
             }
 
-            else if (!sameColourPiece(fromCell,rowPtr,colPtr)){
+            else if (!isMatchedColour(fromCell,rowPtr,colPtr)){
                 legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
                 break;
             }
@@ -111,7 +111,7 @@ public class Bishop extends Piece implements Serializable {
                 colPtr++;
             }
 
-            else if (!sameColourPiece(fromCell,rowPtr,colPtr)){
+            else if (!isMatchedColour(fromCell,rowPtr,colPtr)){
                 legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
                 break;
             }

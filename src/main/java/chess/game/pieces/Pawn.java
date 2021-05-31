@@ -10,7 +10,7 @@ import java.util.List;
 
 import static chess.game.logic.Board.isEmpty;
 import static chess.game.logic.Board.isKingAttackedIfPieceRemoved;
-import static chess.game.logic.Board.sameColourPiece;
+import static chess.game.logic.Board.isMatchedColour;
 
 public class Pawn extends Piece {
 
@@ -37,40 +37,30 @@ public class Pawn extends Piece {
         int row = fromCell.getRow();
         int col = fromCell.getCol();
 
-        if (colour == Colour.WHITE) {
-            if (isEmpty(row-1,col)) {
+        int dirForward = (colour == Colour.WHITE) ? -1 : 1;
+        int rowStart = (colour == Colour.WHITE) ? 6 : 1;
 
-                if(row ==6 && isEmpty(row-2,col))
-                    legalToCoordinates.add(new Coordinate(row-2,col));
+        if (isEmpty(row + dirForward, col)) {
 
-                legalToCoordinates.add(new Coordinate(row - 1, col));
-            }
-            if(col > 0 && !sameColourPiece(fromCell,row-1,col-1) && !isEmpty(row-1,col-1))
-                legalToCoordinates.add(new Coordinate(row-1,col-1));
-
-            if(col < 7 && !sameColourPiece(fromCell,row-1,col+1) && !isEmpty(row-1,col+1))
-                legalToCoordinates.add(new Coordinate(row-1,col+1));
-
-            //if(row == 1)  pawn promotion
-        }
-
-        else {
-            if (isEmpty(row+1,col)) {
-
-                if(row ==1 && isEmpty(row+2,col) )
-                    legalToCoordinates.add(new Coordinate(row+2,col));
-
-                legalToCoordinates.add(new Coordinate(row + 1, col));
-
+            //Pawn is at its original cell (6 for White, 1 for Black) and thus is known to not have already moved
+            if (row == rowStart && isEmpty(row + 2 * dirForward, col)) {
+                legalToCoordinates.add(new Coordinate(row + 2 * dirForward, col));
             }
 
-            if(col > 0 && !sameColourPiece(fromCell,row+1,col-1) && !isEmpty(row+1,col-1))
-                legalToCoordinates.add(new Coordinate(row+1,col-1));
-
-            if(col < 7 && !sameColourPiece(fromCell,row+1,col+1) && !isEmpty(row+1,col+1))
-                legalToCoordinates.add(new Coordinate(row+1,col+1));
-
+            legalToCoordinates.add(new Coordinate(row + dirForward, col));
         }
+
+        if(col > 0 && !isEmpty(row + dirForward, col - 1) &&
+                !isMatchedColour(fromCell, row + dirForward, col - 1)) {
+            legalToCoordinates.add(new Coordinate(row + dirForward, col - 1));
+        }
+
+        if(col < 7 && !isEmpty(row + dirForward, col + 1)
+                && !isMatchedColour(fromCell,row + dirForward, col + 1)) {
+            legalToCoordinates.add(new Coordinate(row + dirForward, col + 1));
+        }
+
+        //----------------------------------------------
 
         List<Coordinate> pinnedCoordinates = isKingAttackedIfPieceRemoved(fromCell);
 
@@ -80,5 +70,4 @@ public class Pawn extends Piece {
 
         return legalToCoordinates;
     }
-
 }

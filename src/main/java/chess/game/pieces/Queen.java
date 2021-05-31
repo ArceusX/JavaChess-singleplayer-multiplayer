@@ -11,7 +11,7 @@ import java.util.List;
 
 import static chess.game.logic.Board.isEmpty;
 import static chess.game.logic.Board.isKingAttackedIfPieceRemoved;
-import static chess.game.logic.Board.sameColourPiece;
+import static chess.game.logic.Board.isMatchedColour;
 
 public class Queen extends Piece implements Serializable {
     public Queen(Colour colour) {
@@ -46,7 +46,7 @@ public class Queen extends Piece implements Serializable {
             if (isEmpty(row, colPtr)) {
                 legalToCoordinates.add(new Coordinate(row, colPtr));
                 colPtr--;
-            } else if (!sameColourPiece(fromCell, row, colPtr)) {
+            } else if (!isMatchedColour(fromCell, row, colPtr)) {
                 legalToCoordinates.add(new Coordinate(row, colPtr));
                 break;
             } else
@@ -57,7 +57,7 @@ public class Queen extends Piece implements Serializable {
             if (isEmpty(row, colPtr)) {
                 legalToCoordinates.add(new Coordinate(row, colPtr));
                 colPtr++;
-            } else if (!sameColourPiece(fromCell, row, colPtr)) {
+            } else if (!isMatchedColour(fromCell, row, colPtr)) {
                 legalToCoordinates.add(new Coordinate(row, colPtr));
                 break;
             } else
@@ -69,7 +69,7 @@ public class Queen extends Piece implements Serializable {
             if (isEmpty(rowPtr, col)) {
                 legalToCoordinates.add(new Coordinate(rowPtr, col));
                 rowPtr++;
-            } else if (!sameColourPiece(fromCell, rowPtr, col)) {
+            } else if (!isMatchedColour(fromCell, rowPtr, col)) {
                 legalToCoordinates.add(new Coordinate(rowPtr, col));
                 break;
             } else
@@ -81,7 +81,7 @@ public class Queen extends Piece implements Serializable {
             if (isEmpty(rowPtr, col)) {
                 legalToCoordinates.add(new Coordinate(rowPtr, col));
                 rowPtr--;
-            } else if (!sameColourPiece(fromCell, rowPtr, col)) {
+            } else if (!isMatchedColour(fromCell, rowPtr, col)) {
                 legalToCoordinates.add(new Coordinate(rowPtr, col));
                 break;
             } else
@@ -99,7 +99,7 @@ public class Queen extends Piece implements Serializable {
                 colPtr--;
             }
 
-            else if (!sameColourPiece(fromCell,rowPtr,colPtr)){
+            else if (!isMatchedColour(fromCell,rowPtr,colPtr)){
                 legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
                 break;
             }
@@ -119,7 +119,7 @@ public class Queen extends Piece implements Serializable {
                 colPtr--;
             }
 
-            else if (!sameColourPiece(fromCell,rowPtr,colPtr)){
+            else if (!isMatchedColour(fromCell,rowPtr,colPtr)){
                 legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
                 break;
             }
@@ -139,7 +139,7 @@ public class Queen extends Piece implements Serializable {
                 colPtr++;
             }
 
-            else if (!sameColourPiece(fromCell,rowPtr,colPtr)){
+            else if (!isMatchedColour(fromCell,rowPtr,colPtr)){
                 legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
                 break;
             }
@@ -159,7 +159,7 @@ public class Queen extends Piece implements Serializable {
                 colPtr++;
             }
 
-            else if (!sameColourPiece(fromCell,rowPtr,colPtr)){
+            else if (!isMatchedColour(fromCell,rowPtr,colPtr)){
                 legalToCoordinates.add(new Coordinate(rowPtr, colPtr));
                 break;
             }

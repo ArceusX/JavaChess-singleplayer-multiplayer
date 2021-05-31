@@ -119,12 +119,12 @@ public class Cell implements ActionListener, Serializable {
                 }
 
                 if(!isNetworked)    //change turn only if its not network mode
-                    changeTurn();
+                    passTurn();
             } else {
 
                 unHightliteCell(this);
 
-                if (occupyingPiece != null && matchColour(this)) {
+                if (occupyingPiece != null && matchTurn(this)) {
                     highliteCell(this);
                 }
             }
