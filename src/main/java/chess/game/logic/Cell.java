@@ -18,13 +18,16 @@ import static chess.game.logic.Board.*;
 
 public class Cell implements ActionListener, Serializable {
 
+    private final Board board;
     public JButton btn;
     public Piece occupyingPiece;
     Coordinate coordinate;
     Colour colour;
     public List<Coordinate> legalToCoordinates;
 
-    public Cell(int row, int col) {
+    public Cell(Board board, int row, int col) {
+        this.board = board;
+
         btn = new JButton();
         occupyingPiece = null;
         coordinate = new Coordinate(row, col);
@@ -97,29 +100,30 @@ public class Cell implements ActionListener, Serializable {
              *      a. he presses a button of same colour piece, then unhighlight previous pressed and highlight new one
              *      b. he presses some other invalid button, unhighlight the previous pressed button
              */
-
-
+            
             //other than legal coordinates
 
             if(withinLegalCoordinates()) {
 
-
-                if (!ispromo())
+                if (!isPromotion()) {
                     removePieceAndAdd();
-                else
+                }
+                else {
                     removePieceAndPromote();
+                }
 
-                if(checkmatedKingColour != Colour.NONE) {
-                    if(isNetworked) {
+                if (checkmatedKingColour != Colour.NONE) {
+                    if (isNetworked) {
                         sendMoveOnNetwork(null);
                     }
-
                     endGame();
                 }
 
-                if(!isNetworked)    //change turn only if its not network mode
+                if (!isNetworked) {
                     passTurn();
-            } else {
+                }
+            }
+            else {
 
                 unHightliteCell(this);
 
@@ -160,6 +164,13 @@ public class Cell implements ActionListener, Serializable {
             return occupyingPiece.colour;
     }
 
+    public ImageIcon getPieceImage() {
+        if (occupyingPiece == null)
+            return null;
+        else
+            return occupyingPiece.image;
+    }
+
     public static boolean contains(List<Coordinate> C, Coordinate position) {       //we can't use highlightedcell.legalToCoordinates.contains(cellposition) because it compares the objects and not object.row & object.col
 
         if (C != null) {
@@ -180,9 +191,9 @@ public class Cell implements ActionListener, Serializable {
             return false;
     }
 
-    boolean ispromo(){
-        if (cellSelected.occupyingPiece.name == ChessPiece.PAWN) {
-            if (cellSelected.occupyingPiece.colour == Colour.WHITE)
+    boolean isPromotion() {
+        if (cellSelected.getPieceName() == ChessPiece.PAWN) {
+            if (cellSelected.getPieceColour() == Colour.WHITE)
                 if (cellSelected.coordinate.row == 1)
                     return true;
                 else
@@ -200,23 +211,24 @@ public class Cell implements ActionListener, Serializable {
     void removePieceAndAdd() {   //removes piece from highlighted cell and adds it to selected cell
 
         //removing piece from highlightedcell
-        List<Coordinate> movedcells = new ArrayList<>();
+        List<Coordinate> movedCells = new ArrayList<>();
 
-        movedcells.add(cellSelected.coordinate);
-        movedcells.add(this.coordinate);
+        movedCells.add(cellSelected.coordinate);
+        movedCells.add(this.coordinate);
 
         if(isNetworked) {
-            sendMoveOnNetwork(movedcells);
+            sendMoveOnNetwork(movedCells);
         }
 
         cellSelected.btn.setIcon(null);   //removes icon from highlightedcell
 
+        if (cellSelected.getPieceName() == ChessPiece.KING) {
+            board.updateKingCell(cellSelected.getPieceColour(), this);
+        }
+
         //if selected cell is king (some piece removes king), then set respective colour king as dead
-        if(this.occupyingPiece != null && this.occupyingPiece.name == ChessPiece.KING ) {
-            if(this.occupyingPiece.colour == Colour.WHITE)
-                checkmatedKingColour = Colour.WHITE;
-            else
-                checkmatedKingColour = Colour.BLACK;
+        if (this.getPieceName() == ChessPiece.KING) {
+            checkmatedKingColour = (this.getPieceColour() == Colour.WHITE) ? Colour.WHITE : Colour.BLACK;
         }
 
         for(Coordinate coordinates : cellSelected.legalToCoordinates) {    //this will remove legalcells' background
@@ -224,7 +236,7 @@ public class Cell implements ActionListener, Serializable {
         }
         cellSelected.legalToCoordinates = null;
 
-        setPiece(cellSelected.occupyingPiece.name, turn);    //sets piece in selected cell
+        setPiece(cellSelected.getPieceName(), turn);    //sets piece in selected cell
         legalToCoordinates = occupyingPiece.getLegalMoves(this);
 
         cellSelected.occupyingPiece = null;
@@ -242,8 +254,8 @@ public class Cell implements ActionListener, Serializable {
 
         cellSelected.btn.setIcon(null);   //removes icon from highlightedcell
 
-        if(this.occupyingPiece != null && this.occupyingPiece.name == ChessPiece.KING ) {
-            if(this.occupyingPiece.colour == Colour.WHITE)
+        if(this.occupyingPiece != null && this.getPieceName() == ChessPiece.KING ) {
+            if(this.getPieceColour() == Colour.WHITE)
                 checkmatedKingColour = Colour.WHITE;
             else
                 checkmatedKingColour = Colour.BLACK;

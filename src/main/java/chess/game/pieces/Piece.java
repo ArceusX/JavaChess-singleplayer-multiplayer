@@ -15,7 +15,7 @@ import static chess.game.logic.Cell.contains;
 
 public abstract class Piece implements Serializable {
 
-    ImageIcon image;
+    public ImageIcon image;
     public ChessPiece name;
     public Colour colour;
     //Set to false when Piece is removed

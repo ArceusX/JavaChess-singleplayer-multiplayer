@@ -109,9 +109,9 @@ public class Board {
     }
 
     private static boolean isPromotion(Cell fromCell) {
-        if (fromCell.occupyingPiece.name == ChessPiece.PAWN) {
+        if (fromCell.getPieceName() == ChessPiece.PAWN) {
             //If a Pawn moved from its respective second to final row (1 for White, 6 for Black)
-            if (fromCell.occupyingPiece.colour == Colour.WHITE) {
+            if (fromCell.getPieceColour() == Colour.WHITE) {
                 return (fromCell.coordinate.row == 1) ? true : false;
             }
             else {
@@ -135,9 +135,9 @@ public class Board {
                 ChessPiece promotedPiece = (ChessPiece) board.inputStream.readObject();
 
                 fromCell.btn.setIcon(null);   //removes icon from highlitedcell
-                if(toCell.occupyingPiece != null && toCell.occupyingPiece.name == ChessPiece.KING ) {
-                    toCell.btn.setIcon(fromCell.occupyingPiece.getImage());
-                    if(toCell.occupyingPiece.colour == Colour.WHITE)
+                if(toCell.getPieceName() == ChessPiece.KING) {
+                    toCell.btn.setIcon(fromCell.occupyingPiece.image);
+                    if(toCell.getPieceColour() == Colour.WHITE)
                         return Colour.BLACK;
                     else
                         return Colour.WHITE;
@@ -145,7 +145,7 @@ public class Board {
 
                 fromCell.legalToCoordinates = null;
 
-                toCell.setPiece(promotedPiece, fromCell.occupyingPiece.colour);    //sets piece in selected cell
+                toCell.setPiece(promotedPiece, fromCell.getPieceColour());    //sets piece in selected cell
                 toCell.legalToCoordinates = toCell.occupyingPiece.getLegalMoves(toCell);
 
                 fromCell.occupyingPiece = null;
@@ -161,9 +161,9 @@ public class Board {
             fromCell.btn.setIcon(null);   //removes icon from highlightedcell
 
             //if selected cell is king (some piece removes king), then return colour that won the game
-            if(toCell.occupyingPiece != null && toCell.occupyingPiece.name == ChessPiece.KING ) {
-                toCell.btn.setIcon(fromCell.occupyingPiece.getImage());
-                if(toCell.occupyingPiece.colour == Colour.WHITE)
+            if(toCell.occupyingPiece != null && toCell.getPieceName() == ChessPiece.KING ) {
+                toCell.btn.setIcon(fromCell.occupyingPiece.image);
+                if(toCell.getPieceColour() == Colour.WHITE)
                     return Colour.BLACK;
                 else
                     return Colour.WHITE;
@@ -172,7 +172,7 @@ public class Board {
 
             fromCell.legalToCoordinates = null;
 
-            toCell.setPiece(fromCell.occupyingPiece.name, fromCell.occupyingPiece.colour);    //sets piece in selected cell
+            toCell.setPiece(fromCell.getPieceName(), fromCell.getPieceColour());    //sets piece in selected cell
             toCell.legalToCoordinates = toCell.occupyingPiece.getLegalMoves(toCell);
 
             fromCell.occupyingPiece = null;
@@ -180,16 +180,14 @@ public class Board {
             return Colour.NONE;
         }
 
-
         return Colour.NONE;
-
     }
 
     void drawBoardAndAddToPanel(Cell cells[][]) {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
 
-                cells[row][col] = new Cell(row, col);
+                cells[row][col] = new Cell(this, row, col);
 
                 //White cells have backgroundColour "SeaShell" to create contrast with White Pieces
                 //Black cells have backgroundColour "Olive" to create contrast with Black Pieces
@@ -269,7 +267,7 @@ public class Board {
     }
 
     static boolean matchTurn(Cell cell) {
-        return (cell.occupyingPiece.colour == turn) ? true : false;
+        return (cell.getPieceColour() == turn) ? true : false;
     }
 
     public static boolean isEmpty(int row, int col) {
@@ -282,8 +280,17 @@ public class Board {
             return false;
         }
 
-        return (fromCell.occupyingPiece.colour == cells[toRow][toCol].occupyingPiece.colour) ?
+        return (fromCell.getPieceColour() == cells[toRow][toCol].getPieceColour()) ?
                 true : false;
+    }
+
+    public void updateKingCell(Colour kingColour, Cell toCell) {
+        if (kingColour == Colour.WHITE) {
+            whiteKingCell = toCell;
+        }
+        else {
+            blackKingCell = toCell;
+        }
     }
 
     public static void passTurn() {
@@ -297,7 +304,7 @@ public class Board {
 
         List<Coordinate> legalCoordinatesWithPin = new ArrayList<>();
 
-        Coordinate path = ((fromCell.occupyingPiece.colour == Colour.WHITE)
+        Coordinate path = ((fromCell.getPieceColour() == Colour.WHITE)
                 ? whiteKingCell : blackKingCell).subtract(fromCell);
 
         int rowDifference = path.row;

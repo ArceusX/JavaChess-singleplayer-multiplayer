@@ -9,8 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static chess.game.logic.Board.isEmpty;
-import static chess.game.logic.Board.isMatchedColour;
+import static chess.game.logic.Board.*;
 
 public class King extends Piece implements Serializable {
     public King(Colour colour) {
@@ -72,8 +71,6 @@ public class King extends Piece implements Serializable {
                     legalToCoordinates.add(new Coordinate(row+1,col+1));
             }
         }
-
-        //from all these legal moves, check if move results in a check.
 
         return legalToCoordinates;
     }
