@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 
-import static chess.game.logic.Board.isKingAttackedIfPieceRemoved;
+import static chess.game.logic.Board.isKingCheckedIfPieceRemoved;
 import static chess.game.logic.Board.isMatchedColour;
 
 public class Knight extends Piece implements Serializable {
@@ -68,7 +68,7 @@ public class Knight extends Piece implements Serializable {
                 }
             }
         }
-        List<Coordinate> pinnedCoordinates = isKingAttackedIfPieceRemoved(fromCell);
+        List<Coordinate> pinnedCoordinates = isKingCheckedIfPieceRemoved(fromCell);
 
         if(pinnedCoordinates != null) {
             return intersection(pinnedCoordinates,legalToCoordinates);

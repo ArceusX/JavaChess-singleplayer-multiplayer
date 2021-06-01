@@ -140,10 +140,10 @@ public class Cell implements ActionListener, Serializable {
 
     Coordinate subtract(Cell fromCell) {
 
-        int row = fromCell.getRow() - this.getRow();
-        int col = fromCell.getCol() - this.getCol();
+        int rowDifference = this.getRow() - fromCell.getRow();
+        int colDifference = this.getCol() - fromCell.getCol();
 
-        return new Coordinate(row, col);
+        return new Coordinate(rowDifference, colDifference);
     }
 
     public ChessPiece getPieceName() {

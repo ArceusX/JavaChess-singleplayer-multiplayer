@@ -290,284 +290,134 @@ public class Board {
         turn = (turn == Colour.BLACK) ? Colour.WHITE : Colour.BLACK;
     }
 
-    //if isKingAttackedIfPieceRemoved(..) is true, that piece is pinned to
-    //its same coloured King and cannot move because a move would put its King in check.
-    public static List<Coordinate> isKingAttackedIfPieceRemoved(Cell fromCell) {
+    /*if isKingCheckedIfPieceRemoved(..) is true, that piece is pinned to its
+      same coloured King and cannot move to a cell not along that pin path
+      because doing so would put its King in check. */
+    public static List<Coordinate> isKingCheckedIfPieceRemoved(Cell fromCell) {
 
-        List<Coordinate> legalCoordinatesOnPin = new ArrayList<>();
+        List<Coordinate> legalCoordinatesWithPin = new ArrayList<>();
 
-        Coordinate path = (fromCell.occupyingPiece.colour == Colour.WHITE) ?
-                fromCell.subtract(whiteKingCell) : fromCell.subtract(blackKingCell);
+        Coordinate path = ((fromCell.occupyingPiece.colour == Colour.WHITE)
+                ? whiteKingCell : blackKingCell).subtract(fromCell);
 
-        int rowDiff = path.row;
-        int colDiff = path.col;
+        int rowDifference = path.row;
+        int colDifference = path.col;
 
-        int originalRow = fromCell.getRow();
-        int originalCol = fromCell.getCol();
-        Colour originalPieceColour = fromCell.getPieceColour();
+        int fromRow = fromCell.getRow();
+        int fromCol = fromCell.getCol();
 
-        /* The piece occupying fromCell, is on and block an enemy piece's attack
+        int colShiftDir;
+        int rowShiftDir;
+        int endForward;
+        int endBackward;
+
+        /* fromCell's occupyingPiece, is on and block an enemy piece's attack
          * on that occupyingPiece's same colored King, on the same, respectively,
-         *      row (rowDiff == 0),
-         *      col (colDiff == 0),
-         *      diagonal (abs(rowDiff) == abs(colDiff)).
+         *      row (rowDifference == 0),
+         *      col (colDifference == 0),
+         *      diagonal (abs(rowDifference) == abs(colDifference)).
          *
-         * e.g. A piece sharing a row with its King can potentially be blocking a
-         *      an attack from an enemy Rook or Queen.
+         * e.g. fromCell's occupyingPiece sharing a row with its King can potentially
+         *      be blocking and thus is pinned by an attack from an enemy Rook or Queen.
          */
-        if (rowDiff == 0 || colDiff == 0 || (abs(rowDiff) == abs(colDiff))) {
+        if (rowDifference == 0 || colDifference == 0 || abs(rowDifference) == abs(colDifference)) {
 
-            if(rowDiff == 0) {
-                if (colDiff < 0) {
-                    //(0,-rowDiff)
-                    for (int j = originalCol+1 ; j < 8; j++) {
+            /*Record, along with Queen, whether also need to check
+              if enemy piece is Rook or Bishop, respectively. */
+            boolean isCheckingDiagonal;
 
-                        if (cells[originalRow][j].getPieceColour() == originalPieceColour)
-                            return null;
-                        if (cells[originalRow][j].getPieceName() == ChessPiece.ROOK || cells[originalRow][j].getPieceName() == ChessPiece.QUEEN)
-                        {
-                            legalCoordinatesOnPin.add(new Coordinate(originalRow,j));// attacking piece cell is also legal
-                            //found a attacking piece
-                            //should return true if there is nothing blocking the originalpiece and the king
-                            //if there is some piece(any colour) between the originalpiece and the king, then return false
+            if (rowDifference == 0) {
+                isCheckingDiagonal = false;
 
-                            for(int k = originalCol-1 ; k>=0 ; k--) {
-                                if(cells[originalRow][k].getPieceName() == ChessPiece.KING && cells[originalRow][k].getPieceColour() == originalPieceColour)
-                                    return legalCoordinatesOnPin;
-                                else{
-                                    if(cells[originalRow][k].occupyingPiece != null)
-                                        return null;
-                                }
-                                legalCoordinatesOnPin.add(new Coordinate(originalRow,k));
-                            }
-                            return null;
-                        }
+                /*e.g. Case of King is east of fromCell's occupyingPiece
+                       (colDifference = whiteKingCell.subtract(fromCell)).col = colDifference < 0,
+                       so King is on the same row, but on a lower col to fromCell's occupiedPiece,
+                       so check if there's any enemy piece in the opposite direction:
+                       with higher col, up to col further in that opposite direction (ie. 8)
+                */
 
-                        legalCoordinatesOnPin.add(new Coordinate(originalRow,j));
+                rowShiftDir = 0;
+                colShiftDir = (colDifference < 0) ? 1 : -1;
 
-                    }
+                endForward = (colDifference < 0) ? 8 : -1;
+                endBackward = (colDifference < 0) ? -1 : 8;
+            } else if (colDifference == 0) {
+                isCheckingDiagonal = false;
+
+                colShiftDir = 0;
+                rowShiftDir = (rowDifference < 0) ? 1 : -1;
+
+                endForward = (rowDifference < 0) ? 8 : -1;
+                endBackward = (rowDifference < 0) ? -1 : 8;
+            }
+            else {
+                isCheckingDiagonal = true;
+
+                /*e.g. Case (1 of 4 possible) of King in
+                  (rowDifference is +, colDifference is +)/lower-right half-diagonal,
+                  so pinning threat may originate in its reflection being
+                  (rowShiftDir is -, colShiftDir is -)/upper-left half-diagonal.*/
+
+                rowShiftDir = (rowDifference > 0) ? -1 : 1;
+                colShiftDir = (colDifference > 0) ? -1 : 1;
+
+                //e.g. King is on higher row, so need to check to row -1 for threat from enemy
+                endForward = (Integer.signum(rowDifference) == 1) ? -1 : 8;
+                endBackward = (Integer.signum(rowDifference) == 1) ? 8 : -1;
+            }
+
+            int rowChecked = fromRow + rowShiftDir;
+            int colChecked = fromCol + colShiftDir;
+
+            for (; (rowChecked != endForward) && (colChecked > -1) && (colChecked < 8);
+                 rowChecked = rowChecked + rowShiftDir, colChecked = colChecked + colShiftDir) {
+
+                /*Threat cannot originate from a piece of the same colour. And that piece performs
+                  the block if one is necessary, so can end the need to check further. */
+                if (cells[rowChecked][colChecked].getPieceColour() == fromCell.getPieceColour()) {
                     return null;
                 }
 
-                if (colDiff > 0) {
-                    for (int j = originalCol-1 ; j >= 0; j--) {
+                /*If enemy piece is verified later to be pinning, can resolve that pin by moving
+                  forward along the pin path, including possibly capturing pinning enemy piece */
+                legalCoordinatesWithPin.add(new Coordinate(rowChecked, colChecked));
 
-                        if (cells[originalRow][j].getPieceColour() == originalPieceColour)
-                            return null;
-                        if (cells[originalRow][j].getPieceName() == ChessPiece.ROOK  || cells[originalRow][j].getPieceName() == ChessPiece.QUEEN)
-                        {
-                            legalCoordinatesOnPin.add(new Coordinate(originalRow,j));
-                            //found a attacking piece
-                            //should return true if there is nothing blocking the originalpiece and the king
-                            //if there is some piece(any colour) between the originalpiece and the king, then return false
+                if (cells[rowChecked][colChecked].getPieceName() == ChessPiece.QUEEN ||
+                        (isCheckingDiagonal && cells[rowChecked][colChecked].getPieceName() == ChessPiece.BISHOP) ||
+                        (!isCheckingDiagonal && cells[rowChecked][colChecked].getPieceName() == ChessPiece.ROOK)) {
 
-                            for(int k = originalCol+1 ; k<8 ; k++) {
-                                if(cells[originalRow][k].getPieceName() == ChessPiece.KING && cells[originalRow][k].getPieceColour() == originalPieceColour)
-                                    return legalCoordinatesOnPin;
-                                else{
-                                    if(cells[originalRow][k].occupyingPiece != null)
-                                        return null;
-                                }
-                                legalCoordinatesOnPin.add(new Coordinate(originalRow,k));
-                            }
+                    int rowBlocked = fromRow - rowShiftDir;
+                    int colBlocked = fromCol - colShiftDir;
+
+                    for (; (rowChecked != endBackward) && (colChecked > -1) && (colChecked < 8);
+                         rowBlocked = rowBlocked - rowShiftDir, colBlocked = colBlocked - colShiftDir) {
+
+                        //Blocked cell contains the same coloured King
+                        if (cells[rowBlocked][colBlocked].getPieceName() == ChessPiece.KING &&
+                                cells[rowBlocked][colBlocked].getPieceColour() == fromCell.getPieceColour()) {
+                            return legalCoordinatesWithPin;
+                        }
+
+                        /*Another piece, of either colour, is already blocking, so
+                          fromCell's occupiedPiece doesn't need to. */
+                        else if (cells[rowBlocked][colBlocked].occupyingPiece != null) {
                             return null;
                         }
-                        legalCoordinatesOnPin.add(new Coordinate(originalRow,j));
 
+                        //Can block by moving to a cell backward along that pin path
+                        legalCoordinatesWithPin.add(new Coordinate(rowBlocked, colBlocked));
                     }
+
+                    /*If preceding for-loop is skipped, it means fromCell's occupiedPiece cannot move
+                      backward, so there cannot exist any cell for it to potentially block. */
                     return null;
                 }
             }
 
-            if(colDiff == 0) {
-                if (rowDiff < 0) {
-                    for (int j = originalRow+1 ; j < 8 ; j++) {
-
-                        if (cells[j][originalCol].getPieceColour() == originalPieceColour)
-                            return null;
-                        if (cells[j][originalCol].getPieceName() == ChessPiece.ROOK  || cells[j][originalCol].getPieceName() == ChessPiece.QUEEN)
-                        {
-                            legalCoordinatesOnPin.add(new Coordinate(j,originalCol));
-                            //found a attacking piece
-                            //should return true if there is nothing blocking the originalpiece and the king
-                            //if there is some piece(any colour) between the originalpiece and the king, then return false
-
-                            for(int k = originalRow-1 ; k>=0 ; k--) {
-                                if(cells[k][originalCol].getPieceName() == ChessPiece.KING && cells[k][originalCol].getPieceColour() == originalPieceColour)
-                                    return legalCoordinatesOnPin;
-                                else{
-                                    if(cells[k][originalCol].occupyingPiece != null)
-                                        return null;
-                                }
-                                legalCoordinatesOnPin.add(new Coordinate(k,originalCol));
-                            }
-                            return null;
-                        }
-
-                        legalCoordinatesOnPin.add(new Coordinate(j,originalCol));
-                    }
-                    return null;
-                }
-
-                if (rowDiff > 0) {
-                    for (int j = originalRow-1 ; j >= 0 ; j--) {
-
-                        if (cells[j][originalCol].getPieceColour() == originalPieceColour)
-                            return null;
-                        if (cells[j][originalCol].getPieceName() == ChessPiece.ROOK  || cells[j][originalCol].getPieceName() == ChessPiece.QUEEN)
-                        {
-                            legalCoordinatesOnPin.add(new Coordinate(j,originalCol));
-                            //found a attacking piece
-                            //should return true if there is nothing blocking the originalpiece and the king
-                            //if there is some piece(any colour) between the originalpiece and the king, then return false
-
-                            for(int k = originalRow+1 ; k<8 ; k++) {
-                                if(cells[k][originalCol].getPieceName() == ChessPiece.KING && cells[k][originalCol].getPieceColour() == originalPieceColour)
-                                    return legalCoordinatesOnPin;
-                                else{
-                                    if(cells[k][originalCol].occupyingPiece != null)
-                                        return null;
-                                }
-                                legalCoordinatesOnPin.add(new Coordinate(k,originalCol));
-                            }
-                            return null;
-                        }
-                        legalCoordinatesOnPin.add(new Coordinate(j,originalCol));
-                    }
-                    return null;
-                }
-            }
-
-            //abs(rowDiff) == abs(colDiff)
-
-            if(rowDiff > colDiff) {
-                //(rowDiff,-rowDiff)
-
-                for(int i=originalRow-1, j=originalCol+1 ; i>=0 && j<8 ; i--,j++) {
-
-                    if(cells[i][j].getPieceColour() == originalPieceColour)
-                        return null;
-                    if(cells[i][j].getPieceName() == ChessPiece.BISHOP || cells[i][j].getPieceName() ==ChessPiece.QUEEN)
-                    {
-                        legalCoordinatesOnPin.add(new Coordinate(i,j));
-                        //found a attacking piece
-                        //should return true if there is nothing blocking the originalpiece and the king
-                        //if there is some piece(any colour) between the originalpiece and the king, then return false
-
-                        for(int k = originalRow+1, l=originalCol-1 ; k<8 && l>=0 ; k++,l--) {
-                            if(cells[k][l].getPieceName() == ChessPiece.KING && cells[k][l].getPieceColour() == originalPieceColour)
-                                return legalCoordinatesOnPin;
-                            else{
-                                if(cells[k][l].occupyingPiece != null)
-                                    return null;
-                            }
-                            legalCoordinatesOnPin.add(new Coordinate(k,l));
-                        }
-                        return null;
-                    }
-
-                    legalCoordinatesOnPin.add(new Coordinate(i,j));
-
-                }
-
-                return null;
-            } else {
-                if(colDiff > rowDiff) {
-                    //(-rowDiff,rowDiff)
-
-                    for(int i=originalRow+1, j=originalCol-1 ; i<8 && j>=0 ; i++,j--) {
-
-                        if(cells[i][j].getPieceColour() == originalPieceColour)
-                            return null;
-                        if(cells[i][j].getPieceName() == ChessPiece.BISHOP || cells[i][j].getPieceName() == ChessPiece.QUEEN)
-                        {
-                            legalCoordinatesOnPin.add(new Coordinate(i,j));
-
-                            //found a attacking piece
-                            //should return true if there is nothing blocking the originalpiece and the king
-                            //if there is some piece(any colour) between the originalpiece and the king, then return false
-
-                            for(int k = originalRow-1, l=originalCol+1 ; k>=0 && l<8 ; k--,l++) {
-                                if(cells[k][l].getPieceName() == ChessPiece.KING && cells[k][l].getPieceColour() == originalPieceColour)
-                                    return legalCoordinatesOnPin;
-                                else{
-                                    if(cells[k][l].occupyingPiece != null)
-                                        return null;
-                                }
-                                legalCoordinatesOnPin.add(new Coordinate(k,l));
-                            }
-                            return null;
-                        }
-                        legalCoordinatesOnPin.add(new Coordinate(i,j));
-                    }
-
-                    return null;
-                } else {
-                    //(rowDiff,rowDiff) or (-rowDiff,-rowDiff)
-                    if(rowDiff < 0) {
-                        //(-rowDiff,-rowDiff)
-
-                        for(int i=originalRow+1,j=originalCol+1 ; i<8 && j<8 ; i++,j++) {
-
-                            if(cells[i][j].getPieceColour() == originalPieceColour)
-                                return null;
-                            if(cells[i][j].getPieceName() == ChessPiece.BISHOP || cells[i][j].getPieceName() == ChessPiece.QUEEN)
-                            {
-                                legalCoordinatesOnPin.add(new Coordinate(i,j));
-                                //found a attacking piece
-                                //should return true if there is nothing blocking the originalpiece and the king
-                                //if there is some piece(any colour) between the originalpiece and the king, then return false
-
-                                for(int k = originalRow-1, l=originalCol-1 ; k>=0 && l>=0 ; k--,l--) {
-                                    if(cells[k][l].getPieceName() == ChessPiece.KING && cells[k][l].getPieceColour() == originalPieceColour)
-                                        return legalCoordinatesOnPin;
-                                    else{
-                                        if(cells[k][l].occupyingPiece != null)
-                                            return null;
-                                    }
-                                    legalCoordinatesOnPin.add(new Coordinate(k,l));
-                                }
-                                return null;
-                            }
-                            legalCoordinatesOnPin.add(new Coordinate(i,j));
-
-                        }
-                        return null;
-
-                    } else {
-                        //(rowDiff,rowDiff)
-
-                        for(int i=originalRow-1,j=originalCol-1 ; i>=0 && j>=0 ; i--,j--) {
-
-                            if(cells[i][j].getPieceColour() == originalPieceColour)
-                                return null;
-                            if(cells[i][j].getPieceName() == ChessPiece.BISHOP || cells[i][j].getPieceName() == ChessPiece.QUEEN)
-                            {
-                                legalCoordinatesOnPin.add(new Coordinate(i,j));
-                                //found a attacking piece
-                                //should return true if there is nothing blocking the originalpiece and the king
-                                //if there is some piece(any colour) between the originalpiece and the king, then return false
-
-                                for(int k = originalRow+1, l=originalCol+1 ; k<8 && l<8 ; k++,l++) {
-                                    if(cells[k][l].getPieceName() == ChessPiece.KING && cells[k][l].getPieceColour() == originalPieceColour)
-                                        return legalCoordinatesOnPin;
-                                    else{
-                                        if(cells[k][l].occupyingPiece != null)
-                                            return null;
-                                    }
-                                    legalCoordinatesOnPin.add(new Coordinate(k,l));
-                                }
-                                return null;
-                            }
-
-                            legalCoordinatesOnPin.add(new Coordinate(i,j));
-                        }
-                        return null;
-
-                    }
-                }
-            }
-        } else {
+            //No piece exists that is pinning along the row or col or diagonal
+            return null;
+        }
+        else {
             return null;
         }
     }
